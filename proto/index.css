@@ -1,0 +1,196 @@
+html, body, .stateHolder {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+body {
+  background: #fff;
+  font-family: ahamono;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+a,
+a:hover,
+a:focus,
+a:active,
+a:visited {
+  color: #fff;
+}
+
+.background {
+  /*background: repeating-linear-gradient(
+    180deg,
+    #df422d calc((100vh / 8) * 0),
+    #df422d calc((100vh / 8) * 1),
+    #b63c2f calc((100vh / 8) * 1),
+    #b63c2f calc((100vh / 8) * 2),
+    #993831 calc((100vh / 8) * 2),
+    #993831 calc((100vh / 8) * 3),
+    #7e3532 calc((100vh / 8) * 3),
+    #7e3532 calc((100vh / 8) * 4),
+    #5f3034 calc((100vh / 8) * 4),
+    #5f3034 calc((100vh / 8) * 5),
+    #462d35 calc((100vh / 8) * 5),
+    #462d35 calc((100vh / 8) * 6),
+    #2b2937 calc((100vh / 8) * 6),
+    #2b2937 calc((100vh / 8) * 7),
+    #132638 calc((100vh / 8) * 7),
+    #132638 calc((100vh / 8) * 8)
+  );*/
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+}
+
+.gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.gradient__row {
+  width: 100%;
+  flex: 1;
+}
+.gradient__row:nth-child(1) {
+  background: #df422d;
+}
+.gradient__row:nth-child(2) {
+  background: #b63c2f;
+}
+.gradient__row:nth-child(3) {
+  background: #993831;
+}
+.gradient__row:nth-child(4) {
+  background: #7e3532;
+}
+.gradient__row:nth-child(5) {
+  background: #5f3034;
+}
+.gradient__row:nth-child(6) {
+  background: #462d35;
+}
+.gradient__row:nth-child(7) {
+  background: #2b2937;
+}
+.gradient__row:nth-child(8) {
+  background: #132638;
+}
+
+.head {
+  position: fixed;
+  top: calc((100vh / 8) * 1);
+  bottom: calc((100vh / 8) * 1);
+  width: 100%;
+  left: 0;
+  right: 0;
+  height: calc((100vh / 8) * 6);
+  z-index: 3;
+}
+.tesseract {
+  position: fixed;
+  width: 100%;
+  top: calc((100vh / 8) * 1.25);
+  bottom: calc((100vh / 8) * 1.25);
+  left: 0;
+  right: 0;
+  z-index: 4;
+  height: calc((100vh / 8) * 5.5);
+}
+.introduction {
+  position: absolute;
+  width: 100%;
+  top: calc((100vh / 8) * 3.25);
+  bottom: calc((100vh / 8) * 3.25);
+  left: 0;
+  right: 0;
+  z-index: 4;
+  height: calc((100vh / 8) * 1.5);
+}
+
+.scenery {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 2rem;
+  height: 100%;
+}
+
+.glitch {
+  position: relative;
+  z-index: 2;
+}
+
+.aboutText {
+  max-width: 300px;
+  color: #fff;
+  text-align: right;
+}
+
+.workButton {
+  position: absolute;
+  bottom: 2rem;
+  text-align: center;
+  margin: auto;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.zoomable {
+  position: fixed;
+  background: #fff;
+  top: 50%;
+  height: 100%;
+  width: 100%;
+  transform: translateY(-50%) scaleY(.001);
+}
+
+.zoomable {
+  transition: .4s .4s ease-in-out;
+}
+#work:target .zoomable  {
+  transform: translateY(-50%) scaleY(1);
+}
+.scenery {
+  transition: .8s ease-in;
+}
+#work:target .scenery  {
+  transform: scale(.25);
+}
+.gradient {
+  transition: .8s ease-in;
+}
+#work:target .gradient  {
+  transform: scale(1.5);
+}
+.head {
+  transition: .8s ease-in;
+}
+#work:target .head  {
+  transform: scale(.25);
+}
+.tesseract {
+  transition: .8s ease-in;
+}
+#work:target .tesseract  {
+  transform: scale(4);
+}
+.introduction {
+  transition: .8s ease-in;
+}
+#work:target .introduction  {
+  transform: scale(0);
+}
