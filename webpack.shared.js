@@ -4,7 +4,7 @@ var webpackConfig = {
   devtool: 'source-map',
   watch: false,
   cache: true,
-  entry: './src/app.js',
+  entry: './app/index.js',
   map: true,
 
   output: {
@@ -45,10 +45,11 @@ var webpackConfig = {
     alias: {
       'utils': path.resolve('./utils'),
       'components': path.resolve('./src/components'),
-      'pages': path.resolve('./src/pages'),
+      'pages': path.resolve('./pages'),
+      'app': path.resolve('./app'),
       'drivers': path.resolve('./drivers'),
       'icons': path.resolve('./src/icons'),
-      'dataHandlers': path.resolve('./src/dataHandlers'),
+      'assets': path.resolve('./assets'),
     },
   },
   postcss: function () {

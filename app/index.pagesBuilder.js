@@ -20,5 +20,5 @@ export function runApp ({initialState, urls}) {
     stop: () => {},
   }
 
-  return xs.create(producer).debug()
+  return xs.create(producer)
 }

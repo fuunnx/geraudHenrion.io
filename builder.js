@@ -3,14 +3,14 @@ import path from 'path'
 import {run} from '@cycle/xstream-run'
 import {replace, map} from 'ramda'
 
-import {flattenParallel} from './utils/operators'
-import {runApp} from './src/app.builder'
-import {makeFsDriver} from './drivers/fsDriver'
+import {flattenParallel} from 'utils/operators'
+import {runApp} from 'app/index.pagesBuilder'
+import {makeFsDriver} from 'drivers/fsDriver'
 
-const SOURCE_DIR = './src/pages'
+const SOURCE_DIR = './pages'
 const SINK_DIR = './dist'
 const drivers = {
-  FS: makeFsDriver(),
+  FS: makeFsDriver({watch: true}),
 }
 
 run(main, drivers)

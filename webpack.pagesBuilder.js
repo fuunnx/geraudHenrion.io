@@ -23,7 +23,7 @@ var webpackConfig = merge(sharedConfig, {
   entry: './builder.js',
 
   output: merge(sharedConfig.output, {
-    filename: 'builder.js',
+    filename: 'pagesBuilder.js',
     path: path.resolve('./dist'),
   }),
 

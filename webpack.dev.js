@@ -4,7 +4,7 @@ var path = require('path')
 
 var webpackConfig = merge(sharedConfig, {
   devtool: 'inline-source-map',
-  entry: './src/app.dev.js',
+  entry: './app/index.dev.js',
   watch: true,
   debug: true,
   map: true,
