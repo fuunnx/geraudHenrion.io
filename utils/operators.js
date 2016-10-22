@@ -1,7 +1,9 @@
-import xs from 'xstream'
+import dropRepeats from 'xstream/extra/dropRepeats'
 
-export function flattenParallel (stream) {
-  return stream
-    .fold((acc$, x$) => xs.merge(acc$, x$), xs.empty())
-    .flatten()
+
+export function pluck (propName) {
+  return (x$) => x$
+    .map(x => x[propName])
+    .filter(x => typeof x !== 'undefined')
+    .compose(dropRepeats())
 }

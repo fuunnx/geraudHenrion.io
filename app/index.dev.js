@@ -1,19 +1,20 @@
-import {run} from '@cycle/xstream-run'
 import {createHistory} from 'history'
+import {run} from '@cycle/xstream-run'
 import {makeDOMDriver} from '@cycle/dom'
 import {makeHistoryDriver} from '@cycle/history'
-import {makePagesDriver} from 'drivers/pagesDriver'
+import {rerunner, restartable} from 'cycle-restart'
+import {makeHeadDriver} from 'drivers/headDriver'
+import {makeCacheDriver} from 'drivers/cacheDriver'
 import {main} from './main'
 
-import {rerunner, restartable} from 'cycle-restart'
-
-
+console.log('yooo')
 const history = createHistory()
 
 const drivers = {
   DOM: restartable(makeDOMDriver(`#app`), {pauseSinksWhileReplaying: false}),
+  Head: restartable(makeHeadDriver()),
+  Cache: makeCacheDriver({}),
   History: makeHistoryDriver(history, {capture: true}),
-  Pages: makePagesDriver(window.pageDriverConfig),
 }
 
 const rerun = rerunner(run)

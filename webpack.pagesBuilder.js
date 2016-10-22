@@ -12,7 +12,7 @@ fs.readdirSync('node_modules')
     return ['.bin'].indexOf(x) === -1
   })
   .forEach(function(mod) {
-    nodeModules[mod] = 'commonjs ' + mod
+    nodeModules[mod] = 'commonjs ' + mod //eslint-disable-line
   })
 
 var webpackConfig = merge(sharedConfig, {
@@ -21,6 +21,7 @@ var webpackConfig = merge(sharedConfig, {
   debug: false,
   target: 'node',
   entry: './builder.js',
+  devtool: 'inline-source-map',
 
   output: merge(sharedConfig.output, {
     filename: 'pagesBuilder.js',
