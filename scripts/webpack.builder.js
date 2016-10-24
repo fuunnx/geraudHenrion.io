@@ -1,5 +1,5 @@
 var webpack = require('webpack')
-var sharedConfig = require('./webpack.shared')
+var baseConfig = require('webpack.shared')
 var merge = require('ramda').merge
 var concat = require('ramda').concat
 var path = require('path')
@@ -15,21 +15,21 @@ fs.readdirSync('node_modules')
     nodeModules[mod] = 'commonjs ' + mod //eslint-disable-line
   })
 
-var webpackConfig = merge(sharedConfig, {
+var webpackConfig = merge(baseConfig, {
   watch: false,
   cache: true,
-  debug: false,
+  debug: true,
   target: 'node',
-  entry: './builder.js',
+  entry: path.resolve('scripts/builder/index.js'),
   devtool: 'inline-source-map',
 
-  output: merge(sharedConfig.output, {
-    filename: 'pagesBuilder.js',
-    path: path.resolve('./dist'),
+  output: merge(baseConfig.output, {
+    filename: 'index.js',
+    path: path.resolve('script/builder/dist'),
   }),
 
   module: {
-    loaders: concat(sharedConfig.module.loaders || [], [
+    loaders: concat(baseConfig.module.loaders || [], [
       {
         test: /\.css$/,
         loader: Extract.extract(
@@ -42,7 +42,7 @@ var webpackConfig = merge(sharedConfig, {
 
   externals: nodeModules,
 
-  plugins: concat(sharedConfig.plugins || [], [
+  plugins: concat(baseConfig.plugins || [], [
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
@@ -52,4 +52,4 @@ var webpackConfig = merge(sharedConfig, {
   ]),
 })
 
-module.exports = webpackConfig
+module.exports = webpackConfig // eslint-disable-line

@@ -1,20 +1,15 @@
-var sharedConfig = require('./webpack.shared')
+var baseConfig = require('scripts/webpack.shared')
 var merge = require('ramda').merge
-var path = require('path')
 
-var webpackConfig = merge(sharedConfig, {
+var webpackConfig = merge(baseConfig, {
   devtool: 'inline-source-map',
-  entry: './app/index.dev.js',
+  entry: 'app/index.dev.js',
   watch: true,
   debug: true,
   map: true,
 
-  output: merge(sharedConfig.output, {
-    path: path.resolve('./dist/'),
-  }),
-
   module: {
-    loaders: sharedConfig.module.loaders.concat([
+    loaders: baseConfig.module.loaders.concat([
       {
         test: /\.css$/,
         loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader',
@@ -30,4 +25,4 @@ var webpackConfig = merge(sharedConfig, {
   },
 })
 
-module.exports = webpackConfig
+module.exports = webpackConfig // eslint-disable-line

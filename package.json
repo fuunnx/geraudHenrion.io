@@ -2,18 +2,18 @@
   "name": "geraudhenrion.com",
   "version": "0.0.0",
   "description": "Géraud Henrion's portfolio",
-  "main": "index.js",
   "scripts": {
-    "test": "babel-node node_modules/.bin/painless src/{**,**/**,**/**/**,**/**/**/**}/*.test.js",
-    "start": "npm run webpack:hotPagesBuilder | npm run webpack:dev",
-    "start:prod": "npm run webpack:pagesBuilder && npm run webpack:prod && npm run buildPages",
-    "webpack:dev": "webpack-dev-server --config webpack.dev.js --content-base dist/ --host 0.0.0.0 --inline --hot --progress --watch",
-    "webpack:prod": "webpack --config webpack.prod.js -p --progress",
-    "webpack:pagesBuilder": "webpack --config webpack.pagesBuilder.js -p --progress",
-    "webpack:hotPagesBuilder": "webpack --config webpack.pagesBuilder.js -p --progress --hot --watch",
-    "test:watch": "supervisor -q -n exit -x npm run test",
-    "buildPages:hot": "ENVIRONMENT=developpement node-debug ./dist/pagesBuilder.js",
-    "buildPages": "ENVIRONMENT=production node ./dist/pagesBuilder.js"
+    "start": "npm run builder:compile:hot | npm run devserver",
+    "start:prod": "npm run builder:compile && npm run compile:prod && npm run build",
+
+    "build": "node scripts/builder/dist/index.js",
+    "build:watch": "ENVIRONMENT=developpement node-debug scripts/builder/dist/index.js",
+
+    "devserver": "webpack-dev-server --config scripts/webpack.dev.js --content-base dist/ --host 0.0.0.0 --inline --hot --progress --watch",
+    "compile:prod": "webpack --config scripts/webpack.prod.js -p --progress",
+
+    "builder:compile": "webpack --config scripts/webpack.builder.js -p --progress",
+    "builder:compile:hot": "webpack --config scripts/builder/webpack.builder.js -p --progress --hot --watch"
   },
   "author": "Géraud Henrion",
   "license": "ISC",

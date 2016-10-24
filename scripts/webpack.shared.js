@@ -4,18 +4,19 @@ var webpackConfig = {
   devtool: 'source-map',
   watch: false,
   cache: true,
-  entry: './app/index.js',
+  entry: path.resolve('../app/index.js'),
   map: true,
 
   output: {
-    filename: 'app.js',
-    path: path.resolve('./dist/'),
+    filename: 'index.js',
+    path: path.resolve('../dist/'),
     sourceMapFilename: '[file].map',
   },
 
   module: {
     loaders: [
-      { test: /\.js$/,
+      {
+        test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
       },
@@ -37,19 +38,19 @@ var webpackConfig = {
 
   resolveLoader: {
     modulesDirectories: [
-      path.resolve('./node_modules'),
+      path.resolve('node_modules'),
     ],
   },
 
   resolve: {
     alias: {
-      'utils': path.resolve('./utils'),
-      'components': path.resolve('./src/components'),
-      'pages': path.resolve('./pages'),
-      'app': path.resolve('./app'),
-      'drivers': path.resolve('./drivers'),
-      'icons': path.resolve('./src/icons'),
-      'assets': path.resolve('./assets'),
+      'utils': path.resolve('../utils'),
+      'components': path.resolve('../src/components'),
+      'pages': path.resolve('../pages'),
+      'app': path.resolve('../app'),
+      'drivers': path.resolve('../drivers'),
+      'icons': path.resolve('../src/icons'),
+      'assets': path.resolve('../assets'),
     },
   },
   postcss: function () {
@@ -70,4 +71,4 @@ var webpackConfig = {
   },
 }
 
-module.exports = webpackConfig
+module.exports = webpackConfig // eslint-disable-line
