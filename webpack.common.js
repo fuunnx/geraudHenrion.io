@@ -1,15 +1,15 @@
 var path = require('path')
 
 var webpackConfig = {
-  devtool: 'source-map',
-  watch: false,
   cache: true,
-  entry: path.resolve('../app/index.js'),
   map: true,
-
+  entry: {
+    'main': './app/index.js',
+  },
   output: {
     filename: 'index.js',
-    path: path.resolve('../dist/'),
+    path: 'dist',
+    publicPath: '/',
     sourceMapFilename: '[file].map',
   },
 
@@ -44,13 +44,11 @@ var webpackConfig = {
 
   resolve: {
     alias: {
-      'utils': path.resolve('../utils'),
-      'components': path.resolve('../src/components'),
-      'pages': path.resolve('../pages'),
-      'app': path.resolve('../app'),
-      'drivers': path.resolve('../drivers'),
-      'icons': path.resolve('../src/icons'),
-      'assets': path.resolve('../assets'),
+      'utils': path.resolve('./utils'),
+      'pages': path.resolve('./pages'),
+      'templates': path.resolve('./templates'),
+      'app': path.resolve('./app'),
+      'drivers': path.resolve('./drivers'),
     },
   },
   postcss: function () {
@@ -62,7 +60,7 @@ var webpackConfig = {
       quality: '65-90',
       speed: 4,
     },
-    svgo:{
+    svgo: {
       plugins: [
         {removeViewBox: false},
         {removeEmptyAttrs: false},

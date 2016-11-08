@@ -1,13 +1,9 @@
-var baseConfig = require('scripts/webpack.shared')
+var webpack = require('webpack')
+var baseConfig = require('./webpack.common')
 var merge = require('ramda').merge
 
-var webpackConfig = merge(baseConfig, {
-  devtool: 'inline-source-map',
-  entry: 'app/index.dev.js',
-  watch: true,
-  debug: true,
-  map: true,
 
+var webpackConfig = merge(baseConfig, {
   module: {
     loaders: baseConfig.module.loaders.concat([
       {
@@ -24,5 +20,7 @@ var webpackConfig = merge(baseConfig, {
     contentBase: 'dist/',
   },
 })
+
+
 
 module.exports = webpackConfig // eslint-disable-line

@@ -3,17 +3,8 @@
   "version": "0.0.0",
   "description": "Géraud Henrion's portfolio",
   "scripts": {
-    "start": "npm run builder:compile:hot | npm run devserver",
-    "start:prod": "npm run builder:compile && npm run compile:prod && npm run build",
-
-    "build": "node scripts/builder/dist/index.js",
-    "build:watch": "ENVIRONMENT=developpement node-debug scripts/builder/dist/index.js",
-
-    "devserver": "webpack-dev-server --config scripts/webpack.dev.js --content-base dist/ --host 0.0.0.0 --inline --hot --progress --watch",
-    "compile:prod": "webpack --config scripts/webpack.prod.js -p --progress",
-
-    "builder:compile": "webpack --config scripts/webpack.builder.js -p --progress",
-    "builder:compile:hot": "webpack --config scripts/builder/webpack.builder.js -p --progress --hot --watch"
+    "start": "node .scripts/renderStaticPages && webpack-dev-server --define  process.env.NODE_ENV='\"development\"' --define  process.env.RUN_CONTEXT='\"browser\"' --inline --hot --progress --watch",
+    "build": "node .scripts/renderStaticPages && webpack --define process.env.NODE_ENV='\"production\"' --define  process.env.RUN_CONTEXT='\"browser\"' -p --progress"
   },
   "author": "Géraud Henrion",
   "license": "ISC",
@@ -40,7 +31,9 @@
     "nodemon": "^1.9.2",
     "postcss-cssnext": "^2.7.0",
     "postcss-loader": "^0.8.2",
+    "progress-bar-webpack-plugin": "^1.9.0",
     "proxy-middleware": "^0.15.0",
+    "static-site-generator-webpack-plugin": "^3.1.0",
     "style-loader": "^0.13.1",
     "supervisor": "^0.9.1",
     "svg-inline-loader": "^0.7.1",
@@ -54,10 +47,12 @@
     "glob-promise": "^1.0.6",
     "history": "^3.2.1",
     "isomorphic-fetch": "^2.2.1",
+    "markdown-string": "^0.2.0",
     "minimatch": "^3.0.3",
     "mkdirp": "^0.5.1",
     "normalize.css": "^4.2.0",
     "ramda": "^0.22.1",
+    "snabbdom-virtualize": "^0.6.0",
     "xstream": "^6.4.1"
   }
 }

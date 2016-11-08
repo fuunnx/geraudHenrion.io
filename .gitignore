@@ -1,11 +1,6 @@
 .DS_Store
 node_modules
 npm-debug.log
-bower_components
-build
-public
-.sass-cache
 *.old
-dist/*
-.env
-storage/db.json
+dist/
+.scripts/temp/
