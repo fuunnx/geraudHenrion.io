@@ -22,12 +22,16 @@ mkdirp.sync(TEMP_PATH)
 
 var config = merge(baseConfig, {
   target: 'node',
+  cache: false,
   output: {
     filename: 'index.js',
     path: TEMP_PATH,
-    publicPath: '/',
     sourceMapFilename: '[file].map',
     libraryTarget: 'umd',
+  },
+  node : {
+    '__dirname': '/',
+    '../package.json': 'empty',
   },
   module: {
     loaders: baseConfig.module.loaders.concat([
@@ -45,16 +49,37 @@ var config = merge(baseConfig, {
     new ProgressBarPlugin(),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('production'),
+      'process.env.RUN_CONTEXT': JSON.stringify('node'),
     }),
     new ExtractTextPlugin('styles.css', {allChunks: true}),
   ],
 })
 
-webpack(config).run(function (err/*, stats*/) {
-  if (err) {
-    console.error(err) //eslint-disable-line
-  } else {
-    var app = require(BUILD_PATH).default
+const outputOptions = {
+  exclude: ['node_modules', 'bower_components', 'jam', 'components'],
+  errorDetails: true,
+  chunks: false,  // Makes the build much quieter
+  colors: true,
+}
+
+var lastHash = null
+webpack(config).run(function (err, stats) {
+  Error.stackTraceLimit = 30
+  if(err) {
+    lastHash = null
+    console.error(err.stack || err)
+    if(err.details) console.error(err.details)
+    process.on('exit', function() {
+      process.exit(1) // eslint-disable-line
+    })
+    return
+  }
+
+  if(stats.hash !== lastHash) {
+    lastHash = stats.hash
+    process.stdout.write(stats.toString(outputOptions) + '\n')
+
+    var app = require(TEMP_PATH).default
     glob(PAGES_GLOB)
       .then(function (paths) {
         paths.map(function (x) {return x.replace(path.resolve('./pages'), '')})

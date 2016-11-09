@@ -1,15 +1,11 @@
 import {PageTemplate} from 'templates/default'
-import md from 'markdown-string'
-import {span} from '@cycle/dom'
-import virtualize from 'snabbdom-virtualize'
+import md from 'utils/snabbdowm'
 
-
-export default PageTemplate ({
+export default PageTemplate({
   title: `Coucou les copains`,
-  content: virtualize(md`\
-## Ici = Page d'exemple 
+  content: md`\
+## Ici = Page d'exemple oui oui ou pas. Trump won the elections lol
 
 * [-> vers page d'accueil](/)
 * [-> vers page d'exemple enfouie](/folder/example.html)`,
-  ),
 })

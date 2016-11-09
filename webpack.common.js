@@ -33,6 +33,10 @@ var webpackConfig = {
         include: /icons/,
         loader: 'svg-inline',
       },
+      {
+        test: /\.json$/,
+        loader: 'json',
+      },
     ],
   },
 

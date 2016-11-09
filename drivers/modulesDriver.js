@@ -23,7 +23,14 @@ function loadModule (path) {
   return xs.fromPromise(
     systemImport(path.replace(/^\//, ''))
       .then(x => x.default)
-      .catch(err => console.error(`\n\nError while importing module ${path}:`, err)) // eslint-disable-line
+      .catch(err => console.error(// eslint-disable-line
+`
+Error while importing module ${path}:
+
+
+${err.stack}
+`
+  ))
   ).map(m => ({[path]: m}))
 }
 
