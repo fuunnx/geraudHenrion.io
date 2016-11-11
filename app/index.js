@@ -35,7 +35,6 @@ if (process.env.RUN_CONTEXT === 'browser'
 
 if (process.env.RUN_CONTEXT === 'browser'
   && process.env.NODE_ENV === 'development') {
-  console.clear() // eslint-disable-line
   const drivers = {
     DOM: restartable(makeDOMDriver(APP_NODE),
       {pauseSinksWhileReplaying: false}),
@@ -49,6 +48,7 @@ if (process.env.RUN_CONTEXT === 'browser'
 
   if (module.hot) {
     module.hot.accept('./root', () => {
+      console.clear() // eslint-disable-line
       rerun(require('./root').root, drivers)
     })
   }

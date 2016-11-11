@@ -26,6 +26,7 @@ export function root (sources) {
       title(x),
     ]))
 
+
   return {
     Modules: loadModule$,
     DOM: vtree$,

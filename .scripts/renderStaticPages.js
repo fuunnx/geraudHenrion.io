@@ -13,7 +13,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var TEMP_PATH = path.join(process.cwd(), '.scripts/temp')
 var BUILD_PATH = path.join(process.cwd(), 'dist')
-var PAGES_GLOB = path.join(process.cwd(), 'pages/**/*.js')
+var PAGES_GLOB = path.join(process.cwd(), 'pages/**/index.js')
 
 
 mkdirp.sync(BUILD_PATH)
@@ -64,11 +64,11 @@ const outputOptions = {
 
 var lastHash = null
 webpack(config).run(function (err, stats) {
-  Error.stackTraceLimit = 30
+  Error.stackTraceLimit = 30 // eslint-disable-line
   if(err) {
     lastHash = null
-    console.error(err.stack || err)
-    if(err.details) console.error(err.details)
+    console.error(err.stack || err) // eslint-disable-line
+    if(err.details) console.error(err.details) // eslint-disable-line
     process.on('exit', function() {
       process.exit(1) // eslint-disable-line
     })
@@ -83,8 +83,9 @@ webpack(config).run(function (err, stats) {
     glob(PAGES_GLOB)
       .then(function (paths) {
         paths.map(function (x) {return x.replace(path.resolve('./pages'), '')})
-          .map(function (x) {return x.replace('.js', '')})
+          .map(function (x) {return x.replace('/index.js', '')})
           .forEach(function (url) {
+            console.log(url)
             app({path: url}, function (err, markup) {
               if (err) console.error(err) //eslint-disable-line
               else writeFile(path.join(BUILD_PATH, url + '.html'), markup)

@@ -32,13 +32,14 @@ ${err.stack}
 `
   ))
   ).map(m => ({[path]: m}))
+  .debug()
 }
 
 
 function systemImport(name) {
   return new Promise((res, rej) => {
     if(!name) name = 'index'
-    try {require.ensure([], require => res(require('pages/' + name + '.js')))}
+    try {require.ensure([], require => res(require('pages/' + name + '/index.js')))}
     catch(err) {rej(err)}
   })
 }

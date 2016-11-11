@@ -4,7 +4,7 @@ import {reduceComponents} from './reduceComponents'
 import {scopeChildren} from './scopeChildren'
 
 export default makeDOMHeadDriver
-export function makeDOMHeadDriver (nameSpace) {
+export function makeDOMHeadDriver (nameSpace, options) {
   return (pageHead$) => {
     const filteredHead$ = pageHead$
       .map(scopeChildren(nameSpace))
@@ -13,7 +13,7 @@ export function makeDOMHeadDriver (nameSpace) {
       .take(1)
       .addListener(listener(cleanHead(nameSpace)))
 
-    makeDOMDriver('head')(filteredHead$)
+    makeDOMDriver('head', options)(filteredHead$)
   }
 }
 
