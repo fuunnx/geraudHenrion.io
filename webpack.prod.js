@@ -13,12 +13,9 @@ var webpackConfig = merge(baseConfig, {
     ]),
   },
 
-  devServer: {
-    host: '0.0.0.0',
-    port: 3000,
-    historyApiFallback: true,
-    contentBase: 'dist/',
-  },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({minimize: true}),
+  ],
 })
 
 

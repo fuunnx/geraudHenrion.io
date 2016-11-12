@@ -3,9 +3,7 @@ var path = require('path')
 var webpackConfig = {
   cache: true,
   map: true,
-  entry: {
-    'main': './app/index.js',
-  },
+  entry: './app/index.js',
   output: {
     filename: 'index.js',
     path: 'dist',
@@ -18,6 +16,7 @@ var webpackConfig = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
+        include: __dirname,
         exclude: /node_modules/,
       },
       {
@@ -50,6 +49,7 @@ var webpackConfig = {
     alias: {
       'utils': path.resolve('./utils'),
       'pages': path.resolve('./pages'),
+      'assets': path.resolve('./assets'),
       'templates': path.resolve('./templates'),
       'app': path.resolve('./app'),
       'drivers': path.resolve('./drivers'),

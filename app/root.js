@@ -3,6 +3,7 @@ import 'normalize.css/normalize.css'
 import {head, title, meta} from '@cycle/dom'
 
 // const {Sitemap, Head, DOM, Module, History} = sources
+export default root
 export function root (sources) {
   const {History, Modules} = sources
   const currentUrl$ = History.map(prop('pathname'))

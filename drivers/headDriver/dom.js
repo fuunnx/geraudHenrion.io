@@ -13,7 +13,7 @@ export function makeDOMHeadDriver (nameSpace, options) {
       .take(1)
       .addListener(listener(cleanHead(nameSpace)))
 
-    makeDOMDriver('head', options)(filteredHead$)
+    return makeDOMDriver('head', options)(filteredHead$)
   }
 }
 

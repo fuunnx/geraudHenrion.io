@@ -32,7 +32,6 @@ ${err.stack}
 `
   ))
   ).map(m => ({[path]: m}))
-  .debug()
 }
 
 
