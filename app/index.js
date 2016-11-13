@@ -2,11 +2,10 @@ import {makeDOMHeadDriver, makeHTMLHeadDriver} from 'drivers/headDriver'
 import {makeDOMDriver, makeHTMLDriver} from '@cycle/dom'
 import {makeModulesDriver} from 'drivers/modulesDriver'
 import {makeHistoryDriver} from '@cycle/history'
-
-
-import {rerunner, restartable} from 'cycle-restart'
+import {recycler, recyclable} from 'utils/recycle'
 import {createMemoryHistory} from 'history'
 import {run} from '@cycle/xstream-run'
+import Cycle from '@cycle/xstream-run'
 import {createHistory} from 'history'
 import {pluck} from 'utils/operators'
 import xs from 'xstream'
@@ -35,21 +34,21 @@ if (process.env.RUN_CONTEXT === 'browser'
 
 if (process.env.RUN_CONTEXT === 'browser'
   && process.env.NODE_ENV === 'development') {
-  const drivers = {
-    DOM: restartable(makeDOMDriver(APP_NODE),
+  const driversFactory = () => ({
+    DOM: recyclable(makeDOMDriver(APP_NODE),
       {pauseSinksWhileReplaying: false}),
-    Head: restartable(makeDOMHeadDriver(HEAD_NAMESPACE)),
-    History: makeHistoryDriver(createHistory(), {capture: true}),
-    Modules: makeModulesDriver(),
-  }
+    Head: recyclable(makeDOMHeadDriver(HEAD_NAMESPACE)),
+    History: recyclable(makeHistoryDriver(createHistory(), {capture: true})),
+    Modules: recyclable(makeModulesDriver()),
+  })
 
-  const rerun = rerunner(run)
-  rerun(root, drivers)
+  const rerun = recycler(Cycle, root, driversFactory)
+  // rerun(root)
 
   if (module.hot) {
-    module.hot.accept('./root', () => {
-      console.clear() // eslint-disable-line
-      rerun(require('./root').root, drivers)
+    module.hot.accept(['./root', 'drivers/modulesDriver'], () => {
+      // console.clear() // eslint-disable-line
+      rerun(require('./root').root)
     })
   }
 }

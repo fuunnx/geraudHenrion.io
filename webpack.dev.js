@@ -7,9 +7,10 @@ var merge = require('ramda').merge
 var webpackConfig = merge(baseConfig, {
   entry: [
     baseConfig.entry,
-    'webpack-dev-server/client?http://localhost:3000',
-    'webpack/hot/dev-server',
+    // 'webpack-dev-server/client?http://localhost:3000',
+    // 'webpack/hot/dev-server',
   ],
+  devtool: 'inline-source-map',
 
   module: {
     loaders: baseConfig.module.loaders.concat([
