@@ -17,7 +17,7 @@ export default function HomePage () {
 
 function background () {
   return div('.background', [
-    // steppedGradient(8, '#fff', '#000'),
+    steppedGradient(8, '#fff', '#000'),
     canvas('.glitch'),
     // img('.myHead', {props: {src: myHead}}),
     // img('.tesseract', {props: {src: tesseract}}),
@@ -26,11 +26,22 @@ function background () {
 }
 
 function steppedGradient (steps) {
+  const colors = [
+    '#df422d',
+    '#b63c2f',
+    '#993831',
+    '#7e3532',
+    '#5f3034',
+    '#462d35',
+    '#2b2937',
+    '#132638',
+  ]
   return div('.gradient',
-    [...Array(steps)].map(() =>
+    [...Array(steps)].map((_, index) =>
       div('.row', {style: {
-        'background-color': '#eee',
+        'background-color': colors[index],
         'width': '100%',
+        'height': '12px',
       }})
     )
   )
