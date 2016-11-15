@@ -47,12 +47,13 @@ var webpackConfig = {
 
   resolve: {
     alias: {
-      'utils': path.resolve('./utils'),
-      'pages': path.resolve('./pages'),
-      'assets': path.resolve('./assets'),
-      'templates': path.resolve('./templates'),
+      'utils': path.resolve('./app/utils'),
+      'pages': path.resolve('./app/pages'),
+      'assets': path.resolve('./app/assets'),
+      'templates': path.resolve('./app/templates'),
       'app': path.resolve('./app'),
-      'drivers': path.resolve('./drivers'),
+      'funx': path.resolve('./app'),
+      'drivers': path.resolve('./app/drivers'),
     },
   },
   postcss: function () {

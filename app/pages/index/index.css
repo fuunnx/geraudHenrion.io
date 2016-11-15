@@ -1,0 +1,9 @@
+.gradient {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  flex: 1;
+}
