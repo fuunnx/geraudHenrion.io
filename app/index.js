@@ -10,9 +10,7 @@ import {createHistory} from 'history'
 import {pluck} from 'utils/operators'
 import xs from 'xstream'
 
-
 import {root} from './root'
-
 
 const HEAD_NAMESPACE = '.fnx-head'
 const APP_NODE = '#app'
@@ -34,21 +32,21 @@ if (process.env.RUN_CONTEXT === 'browser'
 
 if (process.env.RUN_CONTEXT === 'browser'
   && process.env.NODE_ENV === 'development') {
+  const History = makeHistoryDriver(createHistory(), {capture: true}) // should not be reinstantiated or loose the capture of clicks
   const driversFactory = () => ({
     DOM: recyclable(makeDOMDriver(APP_NODE),
       {pauseSinksWhileReplaying: false}),
+    History: recyclable(History),
     Head: recyclable(makeDOMHeadDriver(HEAD_NAMESPACE)),
-    History: recyclable(makeHistoryDriver(createHistory(), {capture: true})),
-    Modules: recyclable(makeModulesDriver()),
+    Modules: require('drivers/modulesDriver').makeModulesDriver(),
   })
 
-  const rerun = recycler(Cycle, root, driversFactory)
-  // rerun(root)
+  const rerun = recycler(Cycle, root, driversFactory())
 
   if (module.hot) {
     module.hot.accept(['./root', 'drivers/modulesDriver'], () => {
-      // console.clear() // eslint-disable-line
-      rerun(require('./root').root)
+      console.clear() // eslint-disable-line
+      rerun(require('./root').root, driversFactory())
     })
   }
 }

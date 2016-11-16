@@ -1,6 +1,4 @@
 // FROM https://github.com/cyclejs/recycle
-
-import Cycle from '@cycle/xstream-run'
 import now from 'performance-now'
 
 function isFunction (value) {
@@ -29,39 +27,31 @@ const SourceType = either({
   'boolean': isBoolean,
   'function': isFunction,
   'array': isArray,
-  'undefined': (val) => typeof val === 'undefined'
+  'undefined': (val) => typeof val === 'undefined',
 })
 
-export function recycler (Cycle, app, driversFactory) {
-  let drivers = driversFactory()
+export function recycler (Cycle, app, drivers) {
   let {sinks, sources, run} = Cycle(app, drivers)
-
   let dispose = run()
 
-  return (app) => {
-    let newDrivers = driversFactory()
-    let newSinksSourceDispose = recycle(app, driversFactory(), drivers, {sources, sinks, dispose})
-
-    sinks = newSinksSourceDispose.sinks
-    sources = newSinksSourceDispose.sources
-    dispose = newSinksSourceDispose.dispose
+  return (app, newDrivers) => {
+    dispose = recycle(Cycle, app, newDrivers, drivers, {dispose})
   }
 }
 
-export function recycle (app, drivers, oldDrivers, {sources, sinks, dispose}) {
+export function recycle (Cycle, app, drivers, oldDrivers, {dispose}) {
   dispose()
-
-  const {run, sinks: newSinks, sources: newSources} = Cycle(app, drivers)
-
+  const {run} = Cycle(app, drivers)
   const newDispose = run()
 
   Object.keys(drivers).forEach(driverName => {
     const driver = drivers[driverName]
-
-    driver.replayLog(oldDrivers[driverName].log)
+    if(typeof driver.replayLog === 'function') {
+      driver.replayLog(oldDrivers[driverName].log)
+    }
   })
 
-  return {sinks: newSinks, sources: newSources, dispose: newDispose}
+  return newDispose
 }
 
 export function recyclable (driver) {
@@ -73,9 +63,7 @@ export function recyclable (driver) {
     proxySources[identifier] = stream
 
     return stream.debug(event => {
-      if (!replaying) {
-        log.push({identifier, event, time: now()})
-      }
+      if (!replaying) log.push({identifier, event, time: now()})
     })
   }
 
@@ -184,6 +172,6 @@ function either (states) {
       return returnValue
     },
 
-    _value: value
+    _value: value,
   })
 }
