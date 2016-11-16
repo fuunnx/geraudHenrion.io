@@ -2,12 +2,14 @@ import xs from 'xstream'
 import {pluck} from 'utils/operators'
 import {listener} from 'utils/listener'
 
-
 export function makeModulesDriver () {
-  return (path$) => {
+  function driver (path$) {
     const module$ = path$
       .map(loadModule)
       .flatten()
+      .fold((acc, x) => ({...acc, ...x}), {})
+      .debug()
+      .remember()
 
     module$.addListener(listener(() => {}))
     return {
@@ -16,6 +18,7 @@ export function makeModulesDriver () {
       },
     }
   }
+  return driver
 }
 
 
