@@ -1,4 +1,5 @@
 var path = require('path')
+var CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin')
 
 var webpackConfig = {
   cache: true,
@@ -38,6 +39,8 @@ var webpackConfig = {
       },
     ],
   },
+
+  plugins: [],
 
   resolveLoader: {
     modulesDirectories: [

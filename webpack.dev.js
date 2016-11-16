@@ -1,7 +1,7 @@
 var webpack = require('webpack')
 var baseConfig = require('./webpack.common')
 var merge = require('ramda').merge
-
+var concat = require('ramda').concat
 
 
 var webpackConfig = merge(baseConfig, {
@@ -20,6 +20,9 @@ var webpackConfig = merge(baseConfig, {
       },
     ]),
   },
+  plugins: concat(baseConfig.plugins, [
+    new webpack.NoErrorsPlugin(),
+  ]),
 
   devServer: {
     host: '0.0.0.0',

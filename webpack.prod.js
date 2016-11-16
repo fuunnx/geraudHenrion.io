@@ -1,9 +1,11 @@
 var webpack = require('webpack')
 var baseConfig = require('./webpack.common')
 var merge = require('ramda').merge
+var concat = require('ramda').concat
 
 
 var webpackConfig = merge(baseConfig, {
+  devtool: 'eval-cheap-module-source-map',
   module: {
     loaders: baseConfig.module.loaders.concat([
       {
@@ -13,9 +15,9 @@ var webpackConfig = merge(baseConfig, {
     ]),
   },
 
-  plugins: [
+  plugins: concat(baseConfig.plugins, [
     new webpack.optimize.UglifyJsPlugin({minimize: true}),
-  ],
+  ]),
 })
 
 
