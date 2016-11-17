@@ -7,8 +7,7 @@ export function makeModulesDriver () {
     const module$ = path$
       .map(loadModule)
       .flatten()
-      .fold((acc, x) => ({...acc, ...x}), {})
-      .debug()
+      .fold((acc, x) => ({...acc, ...x}), {}) // {name: module}
       .remember()
 
     module$.addListener(listener(() => {}))
