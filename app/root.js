@@ -30,11 +30,12 @@ export function root (sources) {
       title(x),
     ]))
 
-  const canvasRender$ = xs.of(
-    rect({
+
+  function makeCanvasContent (x) {
+    return JSON.stringify(rect({
       x: 10,
       y: 10,
-      width: 160,
+      width: 200,
       height: 100,
       draw: [
         {fill: 'purple'},
@@ -43,21 +44,20 @@ export function root (sources) {
         text({
           x: 15,
           y: 25,
-          value: 'Hello World!',
+          value: 'Hello World! ' + x,
           font: '18pt Arial',
           draw: [
             {fill: 'white'},
           ],
         }),
       ],
-    })
-  )
-
+    }))
+  }
 
   return {
     Modules: loadModule$,
-    DOM: xs.of(h('cycle-canvas-component')),
+    DOM: xs.periodic(100).map(x => h('cycle-canvas-component', {attrs: {'data-structure': makeCanvasContent(x)}})),
     Head: headvtree$,
-    Canvas: canvasRender$,
+    // Canvas: canvasRender$,
   }
 }
