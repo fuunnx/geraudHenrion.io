@@ -1,1 +1,6 @@
-<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 276 214"><defs><style>.cls-1{fill:none;stroke:#fff;stroke-linejoin:bevel;stroke-width:.5;}</style></defs><title>logotype</title><polygon class="cls-1" points="62 46 123 107 62 168 0 107 62 46"/><polygon class="cls-1" points="153 46 214 107 153 168 92 107 153 46"/><polygon class="cls-1" points="169 0 276 107 169 214 62 107 169 0"/><polygon class="cls-1" points="92 77 123 107 92 138 62 107 92 77"/><line class="cls-1" y1="107" x2="92" y2="107"/><line class="cls-1" y1="107" x2="92" y2="107"/><line class="cls-1" x1="123" y1="107" x2="275" y2="107"/><polyline class="cls-1" points="62 46 169 0 153 46 92 77"/><polyline class="cls-1" points="92 138 153 168 169 214 62 168"/></svg>
+<svg id="Calque_1" data-name="Calque 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 276 214">
+  <defs><style>
+    .cls-1{fill:none;stroke:#fff;stroke-linejoin:bevel;stroke-width:1;}
+  </style></defs>
+  <title>logotype</title><polygon class="cls-1" points="62 46 123 107 62 168 0 107 62 46"/><polygon class="cls-1" points="153 46 214 107 153 168 92 107 153 46"/><polygon class="cls-1" points="169 0 276 107 169 214 62 107 169 0"/><polygon class="cls-1" points="92 77 123 107 92 138 62 107 92 77"/><line class="cls-1" y1="107" x2="92" y2="107"/><line class="cls-1" y1="107" x2="92" y2="107"/><line class="cls-1" x1="123" y1="107" x2="275" y2="107"/><polyline class="cls-1" points="62 46 169 0 153 46 92 77"/><polyline class="cls-1" points="92 138 153 168 169 214 62 168"/>
+</svg>

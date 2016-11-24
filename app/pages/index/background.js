@@ -7,12 +7,16 @@ import punchline from './img/introduction.svg'
 
 import gradient from './gradient'
 
+
+const makeRule = (rules) => (className) => dot(rules[className])
+const c = makeRule(styles)
+
 export default function background (zIndex) {
   return div(dot(styles.background), {styles: {zIndex}}, [
-    div(dot(styles.gradient), [gradient]),
-    canvas('.glitch'),
-    img(dot(styles.myHead), {props: {src: myHead}}),
-    img('.tesseract', {props: {src: tesseract}}),
-    img('.punchline', {props: {src: punchline}}),
+    div(c('gradient'), [gradient]),
+    canvas(c('glitch'), {props: {width: '100%', height: '100%'}}),
+    img(c('myHead'), {props: {src: myHead}}),
+    img(c('tesseract'), {props: {src: tesseract}}),
+    img(c('punchline'), {props: {src: punchline}}),
   ])
 }
