@@ -32,7 +32,7 @@ export function root (sources) {
 
 
   function makeCanvasContent (x) {
-    return JSON.stringify(rect({
+    return JSON.stringify([rect({
       x: 10,
       y: 10,
       width: 200,
@@ -51,8 +51,9 @@ export function root (sources) {
           ],
         }),
       ],
-    }))
+    })])
   }
+  console.log(makeCanvasContent(2))
 
   return {
     Modules: loadModule$,
