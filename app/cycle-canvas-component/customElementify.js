@@ -1,48 +1,76 @@
 import {makeCanvasDriver} from './cycle-canvas'
 import Cycle from '@cycle/xstream-run'
 import xs from 'xstream'
-
+import throttle from 'xstream/extra/throttle'
+import {addResizeListener} from './resizeListener'
 
 
 export default function (component) {
   const props$ = xs.create()
-  const observedAttributes = ['width', 'height', 'data-structure']
-  let props = {}
-  let dispose = () => ({})
+  const observedAttributes = ['width', 'height', 'data-fnx-structure']
+  let disposeCycleApp = () => ({}) //eslint-disable-line
+  let disposeResizeListener = () => ({}) //eslint-disable-line
+  let resizeCb = () => ({}) //eslint-disable-line
 
-  return class CanvasComponent extends HTMLElement {
+  return class CanvasComponent extends HTMLDivElement {
     static observedAttributes = observedAttributes
     createdCallback() {
+      this.style.overflow = 'hidden'
       //https://github.com/WebReflection/document-register-element#common-issues--caveat
-      const el = this.appendChild(document.createElement('canvas'))
-      this.el = el
+      const el = this.appendChild(document.createElement('canvas')) //eslint-disable-line
+      this.el = el //eslint-disable-line
+      el.setAttribute('style', `\
+    display: block;\
+    position: absolute;\
+    top: 0;\
+    left: 0;\
+    bottom: 0;\
+    right: 0;\
+    overflow: hidden;\
+      `)
       const {run} = Cycle(component, {
-        Canvas: makeCanvasDriver(el, {width: 1000, height: 1000}),
+        Canvas: makeCanvasDriver(el, {width: 0, height: 0}),
         props: () => props$,
       })
-      dispose = run()
-      props = makePropsObject(this)
-      props$.shamefullySendNext(props)
+      disposeCycleApp = run()
+      props$.shamefullySendNext(makePropsObject(this))
+
+      disposeResizeListener = addResizeListener(this, (evt) => {
+        makeResizeCb(this)(evt)
+        props$.shamefullySendNext(makePropsObject(this))
+      })
     }
-    connectedCallback () {}
+    connectedCallback () {
+    }
     disconnectedCallback () {
-      dispose() //eslint-disable-line
+      disposeCycleApp()
+      disposeResizeListener()
     }
     attributeChangedCallback (attrName, _, value) {
-      if (!props) return
-      props[attrName] = value //eslint-disable-line
-      props$.shamefullySendNext(props)
+      props$.shamefullySendNext(makePropsObject(this))
     }
   }
 }
 
 
 function makePropsObject(element) {
-  const result = {}
+  const result = {
+    ...element.attributes,
+    width: element.el.width,
+    height: element.el.height,
+  }
   const attributes = element.attributes
   for (let i = 0, N = attributes.length; i < N; i++) { //eslint-disable-line
     const attribute = attributes[i]
     result[attribute.name] = attribute.value //eslint-disable-line
   }
   return result
+}
+
+function makeResizeCb (element) {
+  const canvasElement = element.el
+  return (evt) => {
+    canvasElement.width = element.clientWidth
+    canvasElement.height = element.clientHeight
+  }
 }

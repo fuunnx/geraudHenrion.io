@@ -1,10 +1,12 @@
-import {pluck} from 'utils/operators'
+import {rect} from 'cycle-canvas'
 import {h} from '@cycle/dom'
 
 function main({props}) {
   return {
     Canvas: props
-      .compose(pluck('data-structure'))
+      .filter(x => !!x)
+      .map(x => x['data-fnx-structure'])
+      .filter(x => !!x)
       .map(JSON.parse),
   }
 }
@@ -16,43 +18,47 @@ if (process.env.RUN_CONTEXT === 'browser') {
   document.registerElement(
     'cycle-canvas-component',
     CustomElementClass,
-    {extends: 'canvas'},
+    {extends: 'div'},
   )
 }
 
 
-export const canvas = identifyArgs('cycle-canvas-component')
+export const canvas = function (...args) {
+  const tagName = 'cycle-canvas-component'
+  const {selector, attributes, children} = identifyArgs(tagName)(...args)
+  const structure = children.length === 1 ? children[0] : rect(children)
+  const attrs = {
+    ...(attributes.attrs || {}),
+    'data-fnx-structure': JSON.stringify(structure),
+  }
+  const result =  h(selector, {...attributes, attrs})
+  return result
+}
 export default canvas
 
-// export function canvas (sel, attrs, structure) {
-//   return createTagFunction('cycle-canvas-component')
-//
-// }
 
 function identifyArgs (tagName) {
   return (first, b, c) => {
     let selector = tagName
-    let attrs = null
-    let children = null
+    let attributes = {}
+    let children = []
 
     if (isSelector(first)) {
       selector = tagName + first
-      if (b && c) (attrs = b, children = c)
+      if (b && c) (attributes = b, children = c)
       if (b && Array.isArray(b) && !c) (children = b)
-      if (b && !Array.isArray(b) && !c) (attrs = b)
-      if (!b && !c) (attrs = {})
+      if (b && !Array.isArray(b) && !c) (attributes = b)
     }
     if (!isSelector(first)) {
       selector = tagName
-      if(first && b) (attrs = first, children = b)
+      if(first && b) (attributes = first, children = b)
       if (first && Array.isArray(first) && !b) (children = first)
-      if (first && !Array.isArray(first) && !b) (attrs = first)
-      if(!first && !b) (attrs = {})
+      if (first && !Array.isArray(first) && !b) (attributes = first)
     }
 
     return {
       selector,
-      attrs,
+      attributes,
       children,
     }
   }
