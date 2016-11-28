@@ -15,26 +15,15 @@ import {root} from './root'
 const HEAD_NAMESPACE = '.fnx-head'
 const APP_NODE = '#app'
 
-const ClassModule = require('snabbdom/modules/class')
-const PropsModule = require('snabbdom/modules/props')
-const AttrsModule = require('snabbdom/modules/attributes')
-const StyleModule = require('snabbdom/modules/style')
-const DatasetModule = require('snabbdom/modules/dataset')
-
-
-const DOMOptions = {
-  modules: [StyleModule, ClassModule, PropsModule, AttrsModule, DatasetModule],
-}
 
 if (process.env.RUN_CONTEXT === 'browser'
   && process.env.NODE_ENV === 'production') {
 
   const drivers = {
-    Body: makeDOMDriver(APP_NODE, DOMOptions),
+    Body: makeDOMDriver(APP_NODE, {transposition: true}),
     Head: makeDOMHeadDriver(HEAD_NAMESPACE),
     History: makeHistoryDriver(createHistory(), {capture: true}),
     Modules: makeModulesDriver(),
-    // Canvas: makeCanvasDriver(null, {width: 800, height: 800}),
   }
 
   run(root, drivers)
@@ -45,12 +34,11 @@ if (process.env.RUN_CONTEXT === 'browser'
   && process.env.NODE_ENV === 'development') {
   const History = makeHistoryDriver(createHistory(), {capture: true}) // should not be reinstantiated or loose the capture of clicks
   const driversFactory = () => ({
-    DOM: recyclable(makeDOMDriver(APP_NODE, DOMOptions),
+    DOM: recyclable(makeDOMDriver(APP_NODE, {transposition: true}),
       {pauseSinksWhileReplaying: false}),
     History: recyclable(History),
     Head: recyclable(makeDOMHeadDriver(HEAD_NAMESPACE)),
     Modules: require('drivers/modulesDriver').makeModulesDriver(),
-    // Canvas: recyclable(makeCanvasDriver(null, {width: 800, height: 800})),
   })
 
   const rerun = recycler(Cycle, root, driversFactory())
@@ -72,7 +60,6 @@ export default function ({path}, callback) {
         Head: makeHTMLHeadDriver(HEAD_NAMESPACE, x => listener.next({Head: x})),
         History: makeHistoryDriver(createMemoryHistory(path)),
         Modules: makeModulesDriver(),
-        // Canvas: makeCanvasDriver(null, {width: 800, height: 800}),
       }
       setImmediate(() => run(root, drivers))
     },
