@@ -60,6 +60,6 @@
     "normalize.css": "^4.2.0",
     "ramda": "^0.22.1",
     "snabbdom-virtualize": "^0.6.0",
-    "xstream": "^6.4.1"
+    "xstream": "^8.0.0"
   }
 }
