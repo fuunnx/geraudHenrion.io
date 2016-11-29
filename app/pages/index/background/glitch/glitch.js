@@ -16,38 +16,45 @@ export default function Glitch ({DOM}) {
       }))
 
     const state$ = concat(
-        xs.of({width: 0, height: 0}),
+        xs.of({width: 320, height: 480}),
         resize$,
       )
-      .map(({width, height}) => rect({
-        x: (width - 160) / 2,
-        y: (height - 100) / 2,
+      .map(({width, height}) => model({width, height}))
 
-        width: 160,
-        height: 100,
+    const Animation = xs.periodic(17)
+    const view$ = xs.combine(state$, Animation)
+      .map(([fn, n]) => (n % 2 === 0) ? fn() : [])
+      .map(xs => rect({}, xs))
+      .debug()
 
-        draw: [
-          {fill: 'purple'},
-        ],
 
-        children: [
-          text({
-            x: 15,
-            y: 25,
-
-            value: 'Hello World!',
-
-            font: '18pt Arial',
-
-            draw: [
-              {fill: 'white'},
-            ],
-          }),
-        ],
-      })
-  )
-
-    return state$.map(state => canvas(selector, attrs, [state]))
+    return view$.map(view => canvas(selector, attrs, [view]))
 
   }
+}
+
+const model = ({width, height}) => (model) => {
+  const area = width * height
+
+  return [
+    rect(randomRect({width, height})),
+    rect(randomRect({width, height})),
+    rect(randomRect({width, height})),
+  ].map(x => ({
+    ...x,
+    draw: [{fill: '#ffffff'}],
+  }))
+}
+
+
+const shuffle = (seed) => (array) => {
+
+}
+
+function randomRect ({width, height}) {
+  const width_ = Math.round(Math.random() * 15 + 1)
+  const height_ = Math.round(Math.random() * 3 + 1)
+  const x = Math.round(Math.random() * width - width_/2)
+  const y = Math.round(Math.random() * height - height_/2)
+  return {x, y, width: width_, height: height_}
 }

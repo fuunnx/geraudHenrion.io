@@ -2,6 +2,10 @@ import {prop} from 'ramda'
 import 'normalize.css/normalize.css'
 import {head, title, meta} from '@cycle/dom'
 
+import {rect} from 'cycle-canvas'
+import xs from 'xstream'
+import concat from 'xstream/extra/concat'
+
 // const {Sitemap, Head, DOM, Module, History} = sources
 export default root
 export function root (sources) {
@@ -26,6 +30,24 @@ export function root (sources) {
       meta({attrs: {charset: 'utf-8'}}),
       title(x),
     ]))
+
+  const state$ = concat(
+      xs.of({width: 0, height: 0}),
+      xs.of({width: 220, height: 220}),
+    )
+    .debug()
+    .map(({width, height}) => rect({
+      x: (width - 160) / 2,
+      y: (height - 100) / 2,
+
+      width: 160,
+      height: 100,
+
+      draw: [
+        {fill: 'purple'},
+      ],
+    })
+  )
 
   return {
     Modules: loadModule$,

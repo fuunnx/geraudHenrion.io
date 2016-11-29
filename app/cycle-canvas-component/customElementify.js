@@ -1,8 +1,8 @@
 import {makeCanvasDriver} from './cycle-canvas'
 import Cycle from '@cycle/xstream-run'
 import xs from 'xstream'
-import throttle from 'xstream/extra/throttle'
 import {addResizeListener} from './resizeListener'
+import {makeAnimationDriver} from 'cycle-animation-driver'
 
 
 export default function (component) {
@@ -30,7 +30,8 @@ export default function (component) {
       `)
       const {run} = Cycle(component, {
         Canvas: makeCanvasDriver(el, {width: 0, height: 0}),
-        props: () => props$,
+        Props: () => props$,
+        Animation: makeAnimationDriver(),
       })
       disposeCycleApp = run()
       props$.shamefullySendNext(makePropsObject(this))

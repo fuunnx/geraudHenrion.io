@@ -2,6 +2,7 @@ import {makeDOMHeadDriver, makeHTMLHeadDriver} from 'drivers/headDriver'
 import {makeDOMDriver, makeHTMLDriver} from '@cycle/dom'
 import {makeModulesDriver} from 'drivers/modulesDriver'
 import {makeHistoryDriver} from '@cycle/history'
+import {makeCanvasDriver} from 'cycle-canvas'
 import {recycler, recyclable} from 'utils/recycle'
 import {createMemoryHistory} from 'history'
 import {run} from '@cycle/xstream-run'
@@ -39,6 +40,7 @@ if (process.env.RUN_CONTEXT === 'browser'
     History: recyclable(History),
     Head: recyclable(makeDOMHeadDriver(HEAD_NAMESPACE)),
     Modules: require('drivers/modulesDriver').makeModulesDriver(),
+    Canvas: makeCanvasDriver(null, {width: 500, height: 500}),
   })
 
   const rerun = recycler(Cycle, root, driversFactory())

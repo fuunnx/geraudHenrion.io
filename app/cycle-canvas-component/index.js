@@ -1,13 +1,17 @@
+import sampleCombine from 'xstream/extra/sampleCombine'
 import {rect} from 'cycle-canvas'
 import {h} from '@cycle/dom'
 
-function main({props}) {
+
+function main({Props, Animation}) {
+  const state$ = Props
+    .filter(x => !!x)
+    .map(x => x['data-fnx-structure'])
+    .filter(x => !!x)
+    .map(JSON.parse)
+
   return {
-    Canvas: props
-      .filter(x => !!x)
-      .map(x => x['data-fnx-structure'])
-      .filter(x => !!x)
-      .map(JSON.parse),
+    Canvas: state$,
   }
 }
 
