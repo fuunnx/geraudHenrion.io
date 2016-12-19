@@ -31,24 +31,6 @@ export function root (sources) {
       title(x),
     ]))
 
-  const state$ = concat(
-      xs.of({width: 0, height: 0}),
-      xs.of({width: 220, height: 220}),
-    )
-    .debug()
-    .map(({width, height}) => rect({
-      x: (width - 160) / 2,
-      y: (height - 100) / 2,
-
-      width: 160,
-      height: 100,
-
-      draw: [
-        {fill: 'purple'},
-      ],
-    })
-  )
-
   return {
     Modules: loadModule$,
     DOM: vtree$,

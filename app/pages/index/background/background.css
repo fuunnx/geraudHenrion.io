@@ -4,6 +4,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  text-align: center;
 }
 
 .gradient {
@@ -21,10 +22,9 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: 2;
   min-width: 100%;
   min-height: 100%;
-  background-color: rgba(255, 255, 255, .1);
 }
 
 .myHead {
@@ -46,6 +46,7 @@
   bottom: 0;
   left: 0;
   right: 0;
+  width: 100%;
   max-height: calc(100% / 8 * 7);
   min-height: calc(100% / 8 * 7);
   z-index: 4;
@@ -53,12 +54,42 @@
 }
 
 .punchline {
+  text-align: center;
+  display: inline-block;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  width: auto;
   max-height: calc(100% / 4);
   z-index: 5;
   margin: auto;
+  color: #fff;
+}
+.punchline:first-child(1) {
+  font-family: catamaran;
+  font-size: 1rem;
+  font-weight: normal;
+}
+.punchline:nth-child(2) {
+  font-family: catamaran;
+  font-size: 2rem;
+  font-weight: bolder;
+}
+.punchline:nth-child(3) {
+  font-family: ahamono;
+  font-size: 1rem;
+  float: right;
+}
+.background::before {
+  content: "";
+  position: absolute;
+  display: block;
+  top: calc(50% - 1px);
+  left: 0;
+  right: 0;
+  width: 100%;
+  border: 1px solid #fff;
+  z-index: 5;
 }
