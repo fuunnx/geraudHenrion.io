@@ -13,8 +13,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 var TEMP_PATH = path.join(process.cwd(), '.scripts/temp')
 var BUILD_PATH = path.join(process.cwd(), 'dist')
-var PAGES_GLOB = path.join(process.cwd(), 'pages/**/index.js')
-
+var PAGES_GLOB = path.join(process.cwd(), 'app/pages/**/index.js')
 
 mkdirp.sync(BUILD_PATH)
 mkdirp.sync(TEMP_PATH)
@@ -82,7 +81,8 @@ webpack(config).run(function (err, stats) {
     var app = require(TEMP_PATH).default
     glob(PAGES_GLOB)
       .then(function (paths) {
-        paths.map(function (x) {return x.replace(path.resolve('./pages'), '')})
+        console.log(paths)
+        paths.map(function (x) {return x.replace(path.resolve('./app/pages'), '')})
           .map(function (x) {return x.replace('/index.js', '')})
           .forEach(function (url) {
             console.log(url)
@@ -92,6 +92,7 @@ webpack(config).run(function (err, stats) {
             })
           })
       })
+      .catch(function (err) {console.error(err)}) // eslint-disable-line
   }
 })
 
