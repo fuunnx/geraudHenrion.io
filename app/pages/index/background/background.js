@@ -1,26 +1,31 @@
-import {div, img} from '@cycle/dom'
-import dot from 'utils/dot'
+import {div, img, h1, span, br} from '@cycle/dom'
+import {vnode} from 'utils/vnode'
 import styles from './background.css'
 import myHead from '../img/head.svg'
-import tesseract from '../img/logotype.svg'
+import tesseract from 'assets/logo.svg'
 import punchline from '../img/introduction.svg'
 
 import gradient from './gradient'
 import Glitch from './glitch/glitch'
 
-
-const makeRule = (rules) => (className) => dot(rules[className])
-const c = makeRule(styles)
+import makeLocaleRule from 'utils/makeLocaleRule'
+const c = makeLocaleRule(styles)
 
 export default function Background (sources) {
   const glitch = Glitch(sources)
 
-  return zIndex =>
-    div(dot(styles.background), {styles: {zIndex}}, [
+  return vnode(({selector, attributes}) =>
+    div(selector + c('background'), attributes, [
       div(c('gradient'), [gradient]),
       glitch(c('glitch')),
       img(c('myHead'), {props: {src: myHead}}),
       img(c('tesseract'), {props: {src: tesseract}}),
-      img(c('punchline'), {props: {src: punchline}}),
+      h1(c('punchline'), [
+        div(`Hello my name is`),
+        div(`Géraud Henrion`),
+        div(`and I'm a creative Web Developper`),
+      ]),
+      // img(c('punchline'), {props: {src: punchline}}),
     ])
+  )
 }
