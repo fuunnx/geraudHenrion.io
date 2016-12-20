@@ -10,7 +10,7 @@ export default function HomePage (sources) {
 
 
   return {
-    Title: xs.of(`C'est la page d'bof`),
+    Title: xs.of(`Géraud Henrion | Creative Web Developper`),
     DOM: xs.of(div([
       background({styles: {zIndex: 1}}),
       div(dot(styles.content), {styles: {zIndex: 2}}, []),
