@@ -4,7 +4,7 @@
   "description": "Géraud Henrion's portfolio",
   "scripts": {
     "start": "node .scripts/renderStaticPages && webpack-dev-server --config ./webpack.dev.js --define  process.env.NODE_ENV='\"development\"' --define  process.env.RUN_CONTEXT='\"browser\"' --inline --hot --progress --watch",
-    "build": "rimraf ./dist/ && node .scripts/renderStaticPages && webpack --config ./webpack.prod.js --define process.env.NODE_ENV='\"production\"' --define  process.env.RUN_CONTEXT='\"browser\"' -p --progress",
+    "build": "rimraf ./dist/ && node .scripts/renderStaticPages && cp ./.scripts/temp/styles.css ./dist/ && webpack --config ./webpack.prod.js --define process.env.NODE_ENV='\"production\"' --define  process.env.RUN_CONTEXT='\"browser\"' -p --progress",
     "deploy": "gh-pages-deploy"
   },
   "author": "Géraud Henrion",
