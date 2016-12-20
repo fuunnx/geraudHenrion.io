@@ -20,12 +20,12 @@ export default function Background (sources) {
       glitch(c('glitch')),
       img(c('myHead'), {props: {src: myHead}}),
       img(c('tesseract'), {props: {src: tesseract}}),
-      h1(c('punchline'), [
-        div(`Hello my name is`),
-        div(`Géraud Henrion`),
-        div(`and I'm a creative Web Developper`),
-      ]),
-      // img(c('punchline'), {props: {src: punchline}}),
+      // h1(c('punchline'), [
+      //   div(`Hello my name is`),
+      //   div(`Géraud Henrion`),
+      //   div(`and I'm a creative Web Developper`),
+      // ]),
+      img(c('punchline'), {props: {src: punchline}}),
     ])
   )
 }
