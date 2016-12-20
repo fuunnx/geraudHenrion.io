@@ -5,7 +5,7 @@ var concat = require('ramda').concat
 
 
 var webpackConfig = merge(baseConfig, {
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'eval',
   module: {
     loaders: baseConfig.module.loaders.concat([
       {
