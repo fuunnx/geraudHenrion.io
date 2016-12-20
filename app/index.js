@@ -20,7 +20,7 @@ if (process.env.RUN_CONTEXT === 'browser'
   && process.env.NODE_ENV === 'production') {
 
   const drivers = {
-    Body: makeDOMDriver(APP_NODE, {transposition: true}),
+    DOM: makeDOMDriver(APP_NODE, {transposition: true}),
     Head: makeDOMHeadDriver(HEAD_NAMESPACE),
     History: makeHistoryDriver(createHistory(), {capture: true}),
     Modules: makeModulesDriver(),

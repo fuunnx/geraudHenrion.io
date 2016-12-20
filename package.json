@@ -4,10 +4,19 @@
   "description": "Géraud Henrion's portfolio",
   "scripts": {
     "start": "node .scripts/renderStaticPages && webpack-dev-server --config ./webpack.dev.js --define  process.env.NODE_ENV='\"development\"' --define  process.env.RUN_CONTEXT='\"browser\"' --inline --hot --progress --watch",
-    "build": "node .scripts/renderStaticPages && webpack --config ./webpack.prod.js --define process.env.NODE_ENV='\"production\"' --define  process.env.RUN_CONTEXT='\"browser\"' -p --progress"
+    "build": "node .scripts/renderStaticPages && webpack --config ./webpack.prod.js --define process.env.NODE_ENV='\"production\"' --define  process.env.RUN_CONTEXT='\"browser\"' -p --progress",
+    "deploy": "gh-pages-deploy"
   },
   "author": "Géraud Henrion",
   "license": "ISC",
+  "gh-pages-deploy": {
+    "staticpath": "dist",
+    "cname": "geraudhenrion.io",
+    "prep": [
+      "build"
+    ],
+    "noprompt": false
+  },
   "devDependencies": {
     "@cycle/xstream-run": "^3.1.0",
     "babel-core": "^6.17.0",
@@ -25,6 +34,7 @@
     "eslint-plugin-no-class": "^0.1.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
+    "gh-pages-deploy": "^0.4.2",
     "glob-watcher": "^3.0.0",
     "image-webpack-loader": "^2.0.0",
     "json-loader": "^0.5.4",
