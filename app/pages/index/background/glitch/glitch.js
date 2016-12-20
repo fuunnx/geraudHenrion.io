@@ -4,7 +4,7 @@ import {vnode} from 'utils/vnode'
 import xs from 'xstream'
 import {map} from 'ramda'
 
-export default function Glitch ({DOM}) {
+export default function Glitch ({DOM, Animation}) {
   return vnode(({selector, attributes}) => {
     const resize$ = DOM.select(selector)
       .events('resize')
@@ -18,8 +18,11 @@ export default function Glitch ({DOM}) {
     const state$ = resize$
       .map(({width, height}) => model({width, height}))
 
-    const Animation = xs.periodic(80)
-    const nodes$ = xs.combine(state$, Animation)
+    // const Animation = xs.periodic(80)
+    const counter$ = Animation.fold((x) => x+1, 0)
+      .filter(x => x%5 == 0)
+      .map(x => x/5)
+    const nodes$ = xs.combine(state$, counter$)
       .map(([fn, n]) => fn(Math.sin(n/5) * Math.sin(n/3) * 10))
 
 

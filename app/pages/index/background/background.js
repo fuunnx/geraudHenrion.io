@@ -15,7 +15,7 @@ export default function Background (sources) {
   const glitch = Glitch(sources)
 
   return vnode(({selector, attributes}) =>
-    div(selector + c('background'), attributes, [
+    div(selector + c('background'), [
       div(c('gradient'), [gradient]),
       glitch(c('glitch')),
       img(c('myHead'), {props: {src: myHead}}),

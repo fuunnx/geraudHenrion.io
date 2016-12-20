@@ -1,4 +1,5 @@
 import {makeDOMHeadDriver, makeHTMLHeadDriver} from 'drivers/headDriver'
+import {makeAnimationDriver} from 'cycle-animation-driver'
 import {makeDOMDriver, makeHTMLDriver} from '@cycle/dom'
 import {makeModulesDriver} from 'drivers/modulesDriver'
 import {makeHistoryDriver} from '@cycle/history'
@@ -24,6 +25,7 @@ if (process.env.RUN_CONTEXT === 'browser'
     Head: makeDOMHeadDriver(HEAD_NAMESPACE),
     History: makeHistoryDriver(createHistory(), {capture: true}),
     Modules: makeModulesDriver(),
+    Animation: makeAnimationDriver(),
   }
 
   run(root, drivers)
@@ -39,6 +41,7 @@ if (process.env.RUN_CONTEXT === 'browser'
     History: recyclable(History),
     Head: recyclable(makeDOMHeadDriver(HEAD_NAMESPACE)),
     Modules: require('drivers/modulesDriver').makeModulesDriver(),
+    Animation: makeAnimationDriver(),
   })
 
   const rerun = recycler(Cycle, root, driversFactory())
@@ -56,10 +59,11 @@ export default function ({path}, callback) {
   const producer = {
     start: (listener) => {
       const drivers = {
-        DOM: makeHTMLDriver(x => listener.next({DOM: x})),
+        DOM: makeHTMLDriver(x => listener.next({DOM: x}), {transposition: true}),
         Head: makeHTMLHeadDriver(HEAD_NAMESPACE, x => listener.next({Head: x})),
         History: makeHistoryDriver(createMemoryHistory(path)),
         Modules: makeModulesDriver(),
+        Animation: () => xs.of({}),
       }
       setImmediate(() => run(root, drivers))
     },
