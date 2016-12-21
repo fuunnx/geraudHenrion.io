@@ -13,7 +13,6 @@ const c = makeLocaleRule(styles)
 
 export default function Background (sources) {
   const glitch = Glitch(sources)
-  // console.log(myHead)
 
   return vnode(({selector, attributes}) =>
     div(selector + c('background'), [
