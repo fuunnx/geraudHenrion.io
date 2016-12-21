@@ -17,7 +17,7 @@ overflow: hidden;\
 pointer-events: none;\
 z-index: -1;\
   `)
-  element.appendChild(obj)
+
   insertionQ('#' + objID)
   .every(() => {
     const computedStyle = getComputedStyle(element)
@@ -31,6 +31,8 @@ z-index: -1;\
     element.addEventListener('resize', onResize)
     resizeHandler()
   })
+  setTimeout(() => element.appendChild(obj), 100)
+  
   return function dispose () {
     obj.contentDocument.defaultView.removeEventListener('resize', resizeHandler)
     element.removeEventListener('resize', onResize)
