@@ -2,7 +2,7 @@ import {div, img, h1, span, br} from '@cycle/dom'
 import {vnode} from 'utils/vnode'
 import styles from './background.css'
 import myHead from '../img/head.svg'
-import tesseract from 'assets/logo.svg'
+import tesseract from 'assets/logo.svg.js'
 import punchline from '../img/introduction.svg'
 
 import gradient from './gradient'
@@ -13,13 +13,14 @@ const c = makeLocaleRule(styles)
 
 export default function Background (sources) {
   const glitch = Glitch(sources)
+  // console.log(myHead)
 
   return vnode(({selector, attributes}) =>
     div(selector + c('background'), [
       div(c('gradient'), [gradient]),
       glitch(c('glitch')),
       img(c('myHead'), {props: {src: myHead}}),
-      img(c('tesseract'), {props: {src: tesseract}}),
+      span(c('tesseract'), {props: {innerHTML: tesseract}}),
       // h1(c('punchline'), [
       //   div(`Hello my name is`),
       //   div(`Géraud Henrion`),
