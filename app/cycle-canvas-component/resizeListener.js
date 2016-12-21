@@ -3,7 +3,7 @@ import insertionQ from 'insertion-query'
 export const addResizeListener = function (element, onResize) {
   const resizeHandler = () => element.dispatchEvent(new CustomEvent('resize', {bubbles: true}))
   const obj = document.createElement('object')
-  const objID = String(new Date + Math.round(Math.random() * 1000))
+  const objID = String('fnx-resizelistener-' + Date.now() + Math.round(Math.random() * 1000))
   obj.type = 'text/html'
   obj.setAttribute('id', objID)
   obj.setAttribute('style', `\
