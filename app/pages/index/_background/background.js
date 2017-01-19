@@ -1,9 +1,9 @@
-import {div, img, h1, span, br} from '@cycle/dom'
+import {div, img, span} from '@cycle/dom'
 import {vnode} from 'utils/vnode'
 import styles from './background.css'
-import myHead from '../img/head.svg'
+import myHead from '../_img/head.svg'
 import tesseract from 'assets/logo.svg.js'
-import punchline from '../img/introduction.svg'
+import punchline from '../_img/introduction.svg'
 
 import gradient from './gradient'
 import Glitch from './glitch/glitch'
