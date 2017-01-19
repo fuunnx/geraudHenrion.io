@@ -1,99 +1,44 @@
 'use strict'
 
-var fs = require('fs-extra')
-var path = require('path')
-var mkdirp = require('mkdirp')
-var webpack = require('webpack')
-var ProgressBarPlugin = require('progress-bar-webpack-plugin')
-var glob = require('glob-promise')
-var baseConfig = require('../webpack.common')
-var merge = require('ramda').merge
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+const fs = require('fs-extra')
+const path = require('path')
+const mkdirp = require('mkdirp')
+const exec = require('child_process').exec
+const writeSitemap = require('./writeSitemap')
+const getSitemap = require('./getSitemap')
 
 
-var TEMP_PATH = path.join(process.cwd(), '.scripts/temp')
-var BUILD_PATH = path.join(process.cwd(), 'dist')
-var PAGES_GLOB = path.join(process.cwd(), 'app/pages/**/index.js')
+const TEMP_PATH = path.join(process.cwd(), '.scripts/temp')
+const BUILD_PATH = path.join(process.cwd(), 'dist')
 
 mkdirp.sync(BUILD_PATH)
 mkdirp.sync(TEMP_PATH)
+// node: {
+//   '__dirname': '/',
+//   '../package.json': 'empty',
+// },
 
+writeSitemap()
+  .then(() => exec('webpack --env static', afterWebpack))
 
-var config = merge(baseConfig, {
-  target: 'node',
-  cache: false,
-  output: {
-    filename: 'index.js',
-    path: TEMP_PATH,
-    sourceMapFilename: '[file].map',
-    libraryTarget: 'umd',
-  },
-  node : {
-    '__dirname': '/',
-    '../package.json': 'empty',
-  },
-  module: {
-    loaders: baseConfig.module.loaders.concat([
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader',
-        'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-        ),
-      },
-    ]),
-  },
+function afterWebpack (error, stdout) {
+  console.log(stdout)
+  if(error) throw error
 
-  plugins: [
-    new ProgressBarPlugin(),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
-      'process.env.RUN_CONTEXT': JSON.stringify('node'),
-    }),
-    new ExtractTextPlugin('styles.css', {allChunks: true}),
-  ],
-})
-
-const outputOptions = {
-  exclude: ['node_modules', 'bower_components', 'jam', 'components'],
-  errorDetails: true,
-  chunks: false,  // Makes the build much quieter
-  colors: true,
-}
-
-var lastHash = null
-webpack(config).run(function (err, stats) {
-  Error.stackTraceLimit = 30 // eslint-disable-line
-  if(err) {
-    lastHash = null
-    console.error(err.stack || err) // eslint-disable-line
-    if(err.details) console.error(err.details) // eslint-disable-line
-    process.on('exit', function() {
-      process.exit(1) // eslint-disable-line
-    })
-    return
-  }
-
-  if(stats.hash !== lastHash) {
-    lastHash = stats.hash
-    process.stdout.write(stats.toString(outputOptions) + '\n')
-
-    var app = require(TEMP_PATH).default
-    glob(PAGES_GLOB)
-      .then(function (paths) {
-        console.log(paths)
-        paths.map(function (x) {return x.replace(path.resolve('./app/pages'), '')})
-          .map(function (x) {return x.replace('/index.js', '')})
-          .forEach(function (url) {
-            console.log(url)
-            app({path: url}, function (err, markup) {
-              if (err) console.error(err) //eslint-disable-line
-              else writeFile(path.join(BUILD_PATH, url + '.html'), markup)
-            })
-          })
+  const app = require(TEMP_PATH).default
+  getSitemap()
+    .then(sitemap => sitemap
+      .map(path => path.route)
+      .map((route) => {
+        console.log({route, file: path.join(BUILD_PATH, route + '.html')})
+        app({path: route}, function (err, markup) {
+          if (err) console.error(err) //eslint-disable-line
+          else return writeFile(path.join(BUILD_PATH, route + '.html'), markup)
+        })
       })
-      .catch(function (err) {console.error(err)}) // eslint-disable-line
-  }
-})
+    )
+    .catch((err) => console.error(err)) // eslint-disable-line
+}
 
 function writeFile (fileName, content) {
   const dirName = path.dirname(fileName)

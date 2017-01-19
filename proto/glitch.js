@@ -1,4 +1,5 @@
-import R from 'ramda'
+import {range} from 'ramda'
+const prop = () => {}
 
 console.clear()
 const $canvas = document.querySelector('canvas')
@@ -18,7 +19,7 @@ function worldGenerator (ctx) {
     state = {
       rects: shuffle(state.rects)
         .slice(0, Math.floor(state.rects.length * 9 / 10))
-        .concat(R.range(0, 2).map(randomRect)),
+        .concat(range(0, 2).map(randomRect)),
     }
     clear()
     window.setTimeout(() => draw(ctx)(state), 10)

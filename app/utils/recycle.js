@@ -129,7 +129,12 @@ export function recyclable (driver) {
     log = newLog
 
     log.forEach((logEvent) => {
-      proxySources[logEvent.identifier].shamefullySendNext(logEvent.event)
+      const mockStream = {
+        shamefullySendNext: () => {},
+      } // there are missing events identifier from custom component...
+      // temp fix, wait for official library release
+      ;(proxySources[logEvent.identifier] || mockStream)
+        .shamefullySendNext(logEvent.event)
     })
 
     replaying = false
