@@ -2,16 +2,13 @@ import {prop} from 'ramda'
 import 'normalize.css/normalize.css'
 import {head, title, meta} from '@cycle/dom'
 
-import {rect} from 'cycle-canvas'
-import xs from 'xstream'
-import concat from 'xstream/extra/concat'
-
-// const {Sitemap, Head, DOM, Module, History} = sources
 export default root
 export function root (sources) {
   const {History, Modules} = sources
   const currentUrl$ = History.map(prop('pathname'))
     .map(path => path.replace('.html', ''))
+    .map(route => route == '/' ? '/index' : route)
+
   const loadModule$ = currentUrl$
 
   const page$ = currentUrl$

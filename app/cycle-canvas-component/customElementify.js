@@ -2,7 +2,7 @@ import {makeCanvasDriver} from './cycle-canvas'
 import Cycle from '@cycle/xstream-run'
 import xs from 'xstream'
 import {addResizeListener} from './resizeListener'
-import {makeAnimationDriver} from 'cycle-animation-driver'
+import {makeAnimationDriver} from 'drivers/cycle-animation-driver'
 
 
 export default function (component) {
