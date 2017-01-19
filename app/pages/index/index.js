@@ -2,7 +2,7 @@ import xs from 'xstream'
 import {div, a} from '@cycle/dom'
 import styles from './index.css'
 import Background from './_background/background'
-import resumeUrl from './CV-Géraud-Henrion.pdf'
+import resumeUrl from './CV-Geraud-Henrion.pdf' // TODO solve special chars in urls
 
 import makeLocaleRule from 'utils/makeLocaleRule'
 const c = makeLocaleRule(styles)
