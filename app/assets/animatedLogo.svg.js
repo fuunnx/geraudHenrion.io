@@ -1,4 +1,4 @@
-<svg width="512" height="512" viewbow="0 0 1 1">
+export const artwork = `<svg width="512" height="512" viewbow="0 0 1 1">
     <line x1="48.9234%" y1="51.0766%" x2="51.0766%" y2="48.9234%">
       <animate attributeName="x1" from="50" to="50" values="50% ; 47.17157287525381% ; 44.34314575050762% ; 39.09035251883613% ; 39.49441353665701% ; 39.09035251883613% ; 44.34314575050762% ; 47.17157287525381% ; 50%" dur="9s" calcMode="spline" keyTimes="0 ; 0.125 ; 0.25 ; 0.375 ; 0.5 ; 0.625 ; 0.75 ; 0.875 ; 1" keySplines="1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1" fill="freeze" repeatCount="indefinite"></animate>
       <animate attributeName="y1" from="50" to="50" values="50% ; 52.82842712474619% ; 50% ; 50% ; 50% ; 50% ; 50% ; 52.82842712474619% ; 50%" dur="9s" calcMode="spline" keyTimes="0 ; 0.125 ; 0.25 ; 0.375 ; 0.5 ; 0.625 ; 0.75 ; 0.875 ; 1" keySplines="1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1" fill="freeze" repeatCount="indefinite"></animate>
@@ -161,3 +161,5 @@
       <animate attributeName="y2" from="50" to="50" values="50% ; 52.82842712474619% ; 50% ; 50% ; 50% ; 50% ; 50% ; 52.82842712474619% ; 50%" dur="9s" calcMode="spline" keyTimes="0 ; 0.125 ; 0.25 ; 0.375 ; 0.5 ; 0.625 ; 0.75 ; 0.875 ; 1" keySplines="1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1 ; 1 0 0 1" fill="freeze" repeatCount="indefinite"></animate>
     </line>
   </svg>
+`
+export default artwork

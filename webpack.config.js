@@ -129,6 +129,12 @@ module.exports = function (env) { // eslint-disable-line
           ],
         },
         {
+          test: /.*\.(pdf)$/i,
+          use: [
+            'file-loader?name=[name].[ext]',
+          ],
+        },
+        {
           test: /\.svg$/,
           include: /icons/,
           use: ['svg-inline-loader'],
