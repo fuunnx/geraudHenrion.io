@@ -1,17 +1,16 @@
 import xs from 'xstream'
 import {div, a} from '@cycle/dom'
-import styles from './index.css'
+import styles from './_hero.css'
 import Background from './_background/background'
 import resumeUrl from './CV-Geraud-Henrion.pdf' // TODO solve special chars in urls
 
 import makeLocaleRule from 'utils/makeLocaleRule'
 const c = makeLocaleRule(styles)
 
-export default function HomePage (sources) {
+export default function Hero (sources) {
   const background = Background(sources)
 
   return {
-    Title: xs.of(`Géraud Henrion | Creative Web Developper`),
     DOM: xs.of(div([
       background({styles: {zIndex: 1}}),
       div(c('content'), {styles: {zIndex: 2}}, [

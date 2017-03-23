@@ -22,8 +22,9 @@ export function makeModulesDriver () {
 }
 
 function loadModule (path) {
+  const page = sitemap[path] || sitemap[path.replace(/\/index$/, '')]
   return xs.fromPromise(
-      sitemap[path].loadModule()
+      page.loadModule()
         .then(x => x.default)
         .catch(err => console.error(// eslint-disable-line
   `
