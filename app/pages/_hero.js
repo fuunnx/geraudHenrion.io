@@ -11,12 +11,13 @@ export default function Hero (sources) {
   const background = Background(sources)
 
   return {
-    DOM: xs.of(div([
-      background({styles: {zIndex: 1}}),
-      div(c('content'), {styles: {zIndex: 2}}, [
+    DOM: xs.of(div(c('hero'), [
+      background({style: {'z-index': 1}}),
+      div(c('content'), {style: {'z-index': 4}}, [
         a(c('button'), {attrs: {href: resumeUrl, target: '_blank'}}, [
           'Get my resume (FR)',
         ]),
+        div(c('afterButton')),
         div(c('socialLinks'), [
           a(c('socialLink'), {attrs: {href: 'mailto:geraud.henrion@gmail.com', target: '_blank'}}, [
             'geraud.henrion@gmail.com',
