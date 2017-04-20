@@ -60,11 +60,6 @@ module.exports = function (env) { // eslint-disable-line
       })
     )
   }
-  // if (isDev) {
-  //   plugins.push(
-  //     // new webpack.HotModuleReplacementPlugin()
-  //   )
-  // }
   if (isStatic) {
     plugins.push(
       new ExtractTextPlugin({

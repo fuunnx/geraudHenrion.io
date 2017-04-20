@@ -15,6 +15,7 @@ const drivers = {
   History: makeHistoryDriver(createHistory(), {capture: true}),
   Modules: makeModulesDriver(),
   Animation: makeAnimationDriver(),
+  Context: () => 'browser',
 }
 
 run(root, drivers)

@@ -30,6 +30,7 @@ export default function app ({path}, callback) {
         History: makeHistoryDriver(createMemoryHistory(path)),
         Modules: makeModulesDriver(),
         Animation: () => xs.of({}),
+        Context: () => 'server',
       }
       setImmediate(() => run(root, drivers))
     },

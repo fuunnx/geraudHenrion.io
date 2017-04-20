@@ -5,7 +5,6 @@ import {makeHistoryDriver} from '@cycle/history'
 import {recycler, recyclable} from 'utils/recycle'
 import Cycle from '@cycle/xstream-run'
 import {createHistory} from 'history'
-import {makeModulesDriver} from 'drivers/modulesDriver'
 
 import {root} from './root'
 import {HEAD_NAMESPACE, APP_NODE} from './settings.js'
@@ -19,6 +18,7 @@ const driversFactory = () => ({
   Head: recyclable(makeDOMHeadDriver(HEAD_NAMESPACE)),
   Modules: require('drivers/modulesDriver').makeModulesDriver(),
   Animation: makeAnimationDriver(),
+  Context: () => 'browser',
 })
 
 const rerun = recycler(Cycle, root, driversFactory())

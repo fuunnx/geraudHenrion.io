@@ -1,5 +1,6 @@
 import {prop} from 'ramda'
 import 'normalize.css/normalize.css'
+import './global.css'
 import {head, title, meta} from '@cycle/dom'
 
 export default root
