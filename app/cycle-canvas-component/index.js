@@ -1,13 +1,11 @@
 import {rect} from 'cycle-canvas'
-import {h} from '@cycle/dom'
 import {vnode} from 'utils/vnode'
+import {h} from '@cycle/dom'
+const CYCLE_CANVAS_STRUCTURE_CHANGE = 'cycleCanvasStructureChange'
 
-function main({Props}) {
-  const state$ = Props
+function main({View}) {
+  const state$ = View
     .filter(x => !!x)
-    .map(x => x['data-fnx-structure'])
-    .filter(x => !!x)
-    .map(JSON.parse)
 
   return {
     Canvas: state$,
@@ -25,15 +23,39 @@ if (process.env.RUN_CONTEXT === 'browser') {
   )
 }
 
+let elems = {}
 
 export const canvas = vnode(function ({selector, attributes, children}) {
   const tagName = 'cycle-canvas-component'
   const structure = children.length === 1 ? children[0] : rect(children)
   const attrs = {
     ...(attributes.attrs || {}),
-    'data-fnx-structure': JSON.stringify(structure),
   }
-  const result =  h(tagName + selector, {...attributes, attrs})
+
+  const result =  h(
+    tagName + selector,
+    {
+      ...attributes,
+      attrs,
+      hook: {insert},
+    },
+  )
+
+  if(elems[selector]) {
+    const event = new CustomEvent(
+      CYCLE_CANVAS_STRUCTURE_CHANGE,
+      {
+        detail: structure,
+        bubbles: false,
+      },
+    )
+    elems[selector].dispatchEvent(event)
+  }
+
   return result
+
+  function insert({elm}) {
+    elems[selector] = elm
+  }
 })
 export default canvas

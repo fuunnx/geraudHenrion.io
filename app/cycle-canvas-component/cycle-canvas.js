@@ -77,13 +77,6 @@ function translateLine (element, origin) {
     {set: 'strokeStyle', value: element.style.strokeStyle || 'black'},
   ]
 
-  if (element.style.lineDash && element.style.lineDash.constructor === Array) {
-    operations.push({
-      call: 'setLineDash',
-      args: element.style.lineDash,
-    })
-  }
-
   operations.push({
     call: 'moveTo',
     args: [
@@ -112,8 +105,44 @@ function translateLine (element, origin) {
     args: [],
   })
 
+  // operations.push({
+  //   call: 'setLineDash',
+  //   args: [],
+  // })
+  return operations
+}
+
+function translateLines (element, origin) {
+  const operations = [
+    {set: 'lineWidth', value: element.style.lineWidth || 1},
+    {set: 'lineCap', value: element.style.lineCap || 'butt'},
+    {set: 'lineJoin', value: element.style.lineJoin || 'mitter'},
+    {set: 'strokeStyle', value: element.style.strokeStyle || 'black'},
+    {
+      call: 'beginPath',
+      args: [],
+    },
+  ]
+
+  element.lines.forEach(([pointA, pointB]) => {
+    operations.push({
+      call: 'moveTo',
+      args: [
+        origin.x + pointA.x,
+        origin.y + pointA.y,
+      ],
+    })
+    operations.push({
+      call: 'lineTo',
+      args: [
+        origin.x + pointB.x,
+        origin.y + pointB.y,
+      ],
+    })
+  })
+
   operations.push({
-    call: 'setLineDash',
+    call: 'stroke',
     args: [],
   })
 
@@ -210,6 +239,7 @@ export function translateVtreeToInstructions (element, parentEl) {
   const elementMapping = {
     rect: translateRect,
     line: translateLine,
+    lines: translateLines,
     text: translateText,
     polygon: translatePolygon,
   }
@@ -322,11 +352,23 @@ export function line (opts, children) {
   return c('line', {...defaults, ...opts}, children)
 }
 
+export function lines (opts, children) {
+  const defaults = {
+    style: {
+      lineWidth: 1,
+      lineCap: 'butt',
+      lineJoin: 'miter',
+      strokeStyle: 'black',
+    },
+  }
+  return c('lines', {...defaults, ...opts}, children)
+}
+
 export function polygon (opts, children) {
   return c('polygon', opts, children)
 }
 
-export function makeCanvasDriver (selector, {width, height}) {
+export function makeCanvasDriver (selector, {width = 340, height = 480}) {
   let canvas = selector  // eslint-disable-line
   if (typeof canvas === 'string') {
     canvas = document.querySelector(selector)
@@ -334,7 +376,6 @@ export function makeCanvasDriver (selector, {width, height}) {
 
   if (!canvas) {
     canvas = document.createElement('canvas')
-
     document.body.appendChild(canvas)
   }
 
@@ -342,6 +383,17 @@ export function makeCanvasDriver (selector, {width, height}) {
   canvas.height = height //eslint-disable-line
 
   const context = canvas.getContext('2d')
+
+  // http://www.html5rocks.com/en/tutorials/canvas/hidpi/?redirect_from_locale=fr
+  const devicePixelRatio = window.devicePixelRatio || 1
+  const backingStoreRatio = context.webkitBackingStorePixelRatio
+    || context.mozBackingStorePixelRatio
+    || context.msBackingStorePixelRatio
+    || context.oBackingStorePixelRatio
+    || context.backingStorePixelRatio || 1
+
+  const ratio = devicePixelRatio / backingStoreRatio
+  context.scale(ratio, ratio)
 
   let driver = function canvasDriver (sink$) { //eslint-disable-line
     sink$.addListener({
@@ -361,11 +413,11 @@ export function makeCanvasDriver (selector, {width, height}) {
           {},
           defaults,
           rootElement
-          )
+        )
 
         const instructions = translateVtreeToInstructions(rootElementWithDefaults)
-
         renderInstructionsToCanvas(instructions, context)
+
       },
       error: e => { throw e },
       complete: () => null,
