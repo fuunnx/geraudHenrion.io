@@ -1,5 +1,5 @@
 .background {
-  position: fixed;
+  position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
@@ -40,7 +40,7 @@
   margin: auto;
 }
 
-.tesseract svg {
+.tesseractAnimation {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -48,8 +48,20 @@
   right: 0;
   width: 100%;
   height: auto;
-  max-height: calc(100% / 8 * 7);
-  min-height: calc(100% / 8 * 7);
+  z-index: 4;
+  margin: auto;
+}
+
+.tesseractSvg svg {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: auto;
+  max-height: calc(100% / 8 * 6);
+  min-height: calc(100% / 8 * 6);
   z-index: 4;
   margin: auto;
 }
