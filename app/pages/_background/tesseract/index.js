@@ -6,7 +6,7 @@ import {pipe, min, max} from 'ramda'
 import {vnode} from 'utils/vnode'
 import xs from 'xstream'
 
-export default function Tesseract ({DOM, Animation}) {
+export default function Tesseract ({DOM, Time}) {
   return vnode(({selector, attributes: attributes_}) => {
     const attributes = {
       ...attributes_,
@@ -33,9 +33,9 @@ export default function Tesseract ({DOM, Animation}) {
     })
 
     const nodes$ = xs
-      .combine(size$, config$, Animation)
-      .map(([size, config, {timestamp}]) =>
-        model({...size, ...config})(timestamp)
+      .combine(size$, config$, Time.animationFrames())
+      .map(([size, config, {time}]) =>
+        model({...size, ...config})(time)
       )
 
     const view$ = nodes$

@@ -3,7 +3,7 @@ import {canvas} from 'app/cycle-canvas-component'
 import {vnode} from 'utils/vnode'
 import xs from 'xstream'
 
-export default function Glitch ({DOM, Animation}) {
+export default function Glitch ({DOM, Time}) {
   return vnode(({selector, attributes: attributes_}) => {
     const pixelRatio = 1
     const attributes = {
@@ -26,7 +26,8 @@ export default function Glitch ({DOM, Animation}) {
     const state$ = resize$
       .map(({width, height}) => model({width, height, pixelRatio}))
 
-    const counter$ = Animation.fold((x) => x+1, 0)
+    const counter$ = Time.animationFrames()
+      .fold((x) => x+1, 0)
       .filter(x => x%5 == 0)
       .map(x => x/5)
 
