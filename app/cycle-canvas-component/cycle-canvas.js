@@ -1,318 +1,6 @@
 import XStreamAdapter from '@cycle/xstream-adapter'
+import {min, max} from 'ramda'
 import xs from 'xstream'
-
-function flatten (array) {
-  if (typeof array.reduce !== 'function') {
-    return array
-  }
-
-  return array.reduce((flatArray, arrayElement) => flatArray.concat(flatten(arrayElement)), [])
-}
-
-function compact (array) {
-  return array.filter(element => element !== undefined && element !== null)
-}
-
-function translateRect (element, origin) {
-  return element.draw.map(operation => {
-    const operations = [
-      {set: 'lineWidth', value: operation.lineWidth || 1},
-    ]
-
-    if (operation.clear) {
-      operations.push({
-        call: 'clearRect',
-        args: [
-          origin.x,
-          origin.y,
-          element.width,
-          element.height,
-        ],
-      })
-    }
-
-    if (operation.fill) {
-      operations.push({
-        set: 'fillStyle',
-        value: operation.fill || 'black',
-      })
-
-      operations.push({
-        call: 'fillRect',
-        args: [
-          origin.x,
-          origin.y,
-          element.width,
-          element.height,
-        ],
-      })
-    }
-
-    if (operation.stroke) {
-      operations.push({
-        set: 'strokeStyle',
-        value: operation.stroke || 'black',
-      })
-
-      operations.push({
-        call: 'strokeRect',
-        args: [
-          origin.x,
-          origin.y,
-          element.width,
-          element.height,
-        ],
-      })
-    }
-
-    return operations
-  })
-}
-
-function translateLine (element, origin) {
-  const operations = [
-    {set: 'lineWidth', value: element.style.lineWidth || 1},
-    {set: 'lineCap', value: element.style.lineCap || 'butt'},
-    {set: 'lineJoin', value: element.style.lineJoin || 'mitter'},
-    {set: 'strokeStyle', value: element.style.strokeStyle || 'black'},
-  ]
-
-  operations.push({
-    call: 'moveTo',
-    args: [
-      origin.x,
-      origin.y,
-    ],
-  })
-
-  operations.push({
-    call: 'beginPath',
-    args: [],
-  })
-
-  element.points.forEach(point => {
-    operations.push({
-      call: 'lineTo',
-      args: [
-        origin.x + point.x,
-        origin.y + point.y,
-      ],
-    })
-  })
-
-  operations.push({
-    call: 'stroke',
-    args: [],
-  })
-
-  // operations.push({
-  //   call: 'setLineDash',
-  //   args: [],
-  // })
-  return operations
-}
-
-function translateLines (element, origin) {
-  const operations = [
-    {set: 'lineWidth', value: element.style.lineWidth || 1},
-    {set: 'lineCap', value: element.style.lineCap || 'butt'},
-    {set: 'lineJoin', value: element.style.lineJoin || 'mitter'},
-    {set: 'strokeStyle', value: element.style.strokeStyle || 'black'},
-    {
-      call: 'beginPath',
-      args: [],
-    },
-  ]
-
-  element.lines.forEach(([pointA, pointB]) => {
-    operations.push({
-      call: 'moveTo',
-      args: [
-        origin.x + pointA.x,
-        origin.y + pointA.y,
-      ],
-    })
-    operations.push({
-      call: 'lineTo',
-      args: [
-        origin.x + pointB.x,
-        origin.y + pointB.y,
-      ],
-    })
-  })
-
-  operations.push({
-    call: 'stroke',
-    args: [],
-  })
-
-  return operations
-}
-
-function translatePolygon (element, origin) {
-  const [first, ...rest] = element.points
-
-  return [].concat(
-    [{call: 'beginPath', args: []}],
-    [{call: 'moveTo', args: [origin.x + first.x, origin.y + first. y]}],
-    rest.map(point => {
-      return {call: 'lineTo', args: [origin.x + point.x, origin.y + point.y]}
-    }),
-    [{call: 'closePath', args: []}],
-    element.draw.map(operation => {
-      const fillInstructions = [
-        {set: 'fillStyle', value: operation.fill},
-        {call: 'fill', args: []},
-      ]
-      const strokeInstructions = [
-        {set: 'strokeStyle', value: operation.stroke},
-        {call: 'stroke', args: []},
-      ]
-      return operation.fill
-        ? fillInstructions
-        : operation.stroke
-          ? strokeInstructions
-          : []
-    })
-  )
-}
-
-function translateText (element, origin) {
-  return element.draw.map(operation => {
-    const operations = [
-      {set: 'textAlign', value: element.textAlign || 'left'},
-      {set: 'font', value: element.font},
-    ]
-
-    const args = [
-      element.value,
-      origin.x,
-      origin.y,
-    ]
-
-    if (element.width) {
-      args.push(element.width)
-    }
-
-    if (operation.fill) {
-      operations.push({
-        set: 'fillStyle',
-        value: operation.fill || 'black',
-      })
-
-      operations.push({
-        call: 'fillText',
-        args: args,
-      })
-    }
-
-    if (operation.stroke) {
-      operations.push({
-        set: 'strokeStyle',
-        value: operation.stroke || 'black',
-      })
-
-      operations.push({
-        call: 'strokeText',
-        args: args,
-      })
-    }
-
-    return operations
-  })
-}
-
-export function translateVtreeToInstructions (element, parentEl) {
-  if (!element) {
-    return
-  }
-
-  if (!parentEl) {
-    parentEl = {x: 0, y: 0}
-  }
-
-  const origin = {
-    x: element.x ? parentEl.x + element.x : parentEl.x,
-    y: element.y ? parentEl.y + element.y : parentEl.y,
-  }
-
-  const elementMapping = {
-    rect: translateRect,
-    line: translateLine,
-    lines: translateLines,
-    text: translateText,
-    polygon: translatePolygon,
-  }
-
-  const instructions = preDrawHooks(element)
-
-  instructions.push(elementMapping[element.kind](element, origin))
-
-  instructions.push(postDrawHooks())
-
-  const flatInstructions = compact(flatten(instructions))
-
-  if (element.children) {
-    element.children.forEach((child) => {
-      const childInstructions = translateVtreeToInstructions(child, element)
-
-      if (childInstructions) {
-        flatInstructions.push(...childInstructions)
-      }
-    })
-  }
-
-  return flatInstructions
-}
-
-export function renderInstructionsToCanvas (instructions, context) {
-  instructions.forEach(instruction => {
-    if (instruction.set) {
-      context[instruction.set] = instruction.value // eslint-disable-line
-    } else if (instruction.call) {
-      context[instruction.call](...instruction.args)
-    }
-  })
-}
-
-function preDrawHooks (element) {
-  const operations = [
-    {call: 'save', args: []},
-  ]
-
-  if (element.transformations) {
-    element.transformations.forEach(transformation => {
-      if (transformation.translate) {
-        operations.push({
-          call: 'translate',
-          args: [transformation.translate.x, transformation.translate.y],
-        })
-      }
-
-      if (transformation.rotate) {
-        operations.push({
-          call: 'rotate',
-          args: [transformation.rotate],
-        })
-      }
-
-      if (transformation.scale) {
-        operations.push({
-          call: 'scale',
-          args: [transformation.scale.x, transformation.scale.y],
-        })
-      }
-    })
-  }
-
-  return operations
-}
-
-function postDrawHooks () {
-  return [
-    {call: 'restore', args: []},
-  ]
-}
 
 export function c (kind, opts, children) {
   if (opts.children) {
@@ -326,46 +14,12 @@ export function c (kind, opts, children) {
   )
 }
 
-export function rect (opts, children) {
-  return c('rect', opts, children)
-}
-
-export function text (opts, children) {
-  const defaults = {
-    draw: [
-      {fill: 'black'},
-    ],
-  }
-
-  return c('text', {...defaults, ...opts}, children)
-}
-
-export function line (opts, children) {
-  const defaults = {
-    style: {
-      lineWidth: 1,
-      lineCap: 'butt',
-      lineJoin: 'miter',
-      strokeStyle: 'black',
-    },
-  }
-  return c('line', {...defaults, ...opts}, children)
+export function rects (opts, children) {
+  return c('rects', opts, children)
 }
 
 export function lines (opts, children) {
-  const defaults = {
-    style: {
-      lineWidth: 1,
-      lineCap: 'butt',
-      lineJoin: 'miter',
-      strokeStyle: 'black',
-    },
-  }
-  return c('lines', {...defaults, ...opts}, children)
-}
-
-export function polygon (opts, children) {
-  return c('polygon', opts, children)
+  return c('lines', opts, children)
 }
 
 export function makeCanvasDriver (selector, {width = 340, height = 480}) {
@@ -396,28 +50,38 @@ export function makeCanvasDriver (selector, {width = 340, height = 480}) {
   context.scale(ratio, ratio)
 
   let driver = function canvasDriver (sink$) { //eslint-disable-line
-    sink$.addListener({
-      next: rootElement => {
-        const defaults = {
-          kind: 'rect',
-          x: 0,
-          y: 0,
-          width: canvas.width,
-          height: canvas.height,
-          draw: [
-            {clear: true},
-          ],
+    sink$
+    .fold(([frame1, frame2], frame3) => ([frame2, frame3]), [{}, {}])
+    .addListener({
+      next: ([prev, next]) => {
+        if (prev.kind == 'rects') {
+          prev.children.forEach(({x, y, width, height}) => {
+            context.clearRect(x, y, width, height)
+          })
+        }
+        if (prev.kind == 'lines') {
+          const points = next.children.reduce((xs, x) => xs.concat(x), [])
+          const {x, y, width, height} = boundingRect(points)
+          const r = (x) => Math.round(x)
+          context.clearRect(r(x-5), r(y-5), r(width+10), r(height+10))
         }
 
-        const rootElementWithDefaults = Object.assign(
-          {},
-          defaults,
-          rootElement
-        )
-
-        const instructions = translateVtreeToInstructions(rootElementWithDefaults)
-        renderInstructionsToCanvas(instructions, context)
-
+        if (next.kind == 'rects') {
+          context.fillStyle = next.fillStyle
+          next.children.forEach(({x, y, width, height}) => {
+            context.fillRect(x, y, width, height)
+          })
+        }
+        if (next.kind == 'lines') {
+          context.beginPath()
+          context.strokeStyle = next.strokeStyle
+          next.children.forEach(([from, to]) => {
+            context.moveTo(from.x, from.y)
+            context.lineTo(to.x, to.y)
+          })
+          context.stroke()
+          context.closePath()
+        }
       },
       error: e => { throw e },
       complete: () => null,
@@ -428,4 +92,21 @@ export function makeCanvasDriver (selector, {width = 340, height = 480}) {
 
   driver.streamAdapter = XStreamAdapter //eslint-disable-line
   return driver
+}
+
+function boundingRect (points) {
+  const xs = points.map(({x}) => x)
+  const minX = xs.reduce(min, Infinity)
+  const maxX = xs.reduce(max, -Infinity)
+
+  const ys = points.map(({y}) => y)
+  const minY = ys.reduce(min, Infinity)
+  const maxY = ys.reduce(max, -Infinity)
+
+  return {
+    x: minX,
+    y: minY,
+    width: maxX - minX,
+    height: maxY - minY,
+  }
 }

@@ -1,7 +1,6 @@
+import {rects} from 'app/cycle-canvas-component/cycle-canvas'
 import {canvas} from 'app/cycle-canvas-component'
 import {vnode} from 'utils/vnode'
-import {rect} from 'cycle-canvas'
-import {map} from 'ramda'
 import xs from 'xstream'
 
 export default function Glitch ({DOM, Animation}) {
@@ -35,11 +34,14 @@ export default function Glitch ({DOM, Animation}) {
       .map(([fn, n]) => fn(Math.sin(n/5) * Math.sin(n/3) * 3))
 
     const view$ = nodes$
-      .map(map(x => rect({
-        ...x,
-        draw: [{fill: '#fff'}],
-      })))
-      .map(xs => rect({}, xs))
+      .map(xs => {
+        try {
+          return rects({
+            children: xs,
+            fillStyle: '#ffffff',
+          })
+        } catch (e) {console.error(e)}
+      })
       .map(view => canvas(selector, attributes, [view]))
 
     return view$
@@ -55,15 +57,11 @@ function randomRect ({width, height, pixelRatio}, multiplier) {
   const height_ = Math.round(Math.random() * 3 * multiplier + 2 - width_ / 15)
   const x = Math.round(Math.random() * width * pixelRatio)
   const y = Math.round(Math.random() * height * pixelRatio)
-  const transformations = [
-    {translate: {x, y}},
-  ]
 
   return {
-    x: Math.round(-width_ / 2 * pixelRatio),
-    y: Math.round(-height_ / 2 * pixelRatio),
+    x: Math.round(-width_ / 2 * pixelRatio) + x,
+    y: Math.round(-height_ / 2 * pixelRatio) + y,
     width: width_ * pixelRatio,
     height: height_ * pixelRatio,
-    transformations,
   }
 }

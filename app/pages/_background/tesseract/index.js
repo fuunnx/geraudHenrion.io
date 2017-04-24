@@ -1,5 +1,5 @@
 import canvasPixelRatio from 'app/cycle-canvas-component/pixelRatio'
-import {lines, rect} from 'app/cycle-canvas-component/cycle-canvas'
+import {lines} from 'app/cycle-canvas-component/cycle-canvas'
 import {hypercubeAnimationState} from './hypercube'
 import {canvas} from 'app/cycle-canvas-component'
 import {pipe, min, max} from 'ramda'
@@ -41,15 +41,9 @@ export default function Tesseract ({DOM, Animation}) {
     const view$ = nodes$
       .map(xs => xs.map(pts => pts.map(([x, y]) => ({x, y}))))
       .map(xs => lines({
-        lines: xs,
-        x: 0,
-        y: 0,
-        style: {
-          lineWidth: 2,
-          strokeStyle: '#ffffff',
-        },
+        children: xs,
+        strokeStyle: '#ffffff',
       }))
-      .map(x => rect({}, [x]))
       .map(view => canvas(selector, attributes, [view]))
       .startWith(canvas(selector, attributes, []))
 
@@ -71,24 +65,17 @@ const model = (config) => (delta) => {
     ? width
     : height * 1.01
 
-  return [
-    ...hypercube
-      .map(pipe(
-        ([x, y]) => [x * size, y * size],
-        ([x, y]) => [x + width / 2, y + height / 2],
-        ([x, y]) => [Math.round(x * canvasPixelRatio), Math.round(y * canvasPixelRatio)],
-      ))
-      .vertexs,
-    horizontalLine({
-      width: width * canvasPixelRatio,
-      height: height * canvasPixelRatio,
-    }),
-  ]
+  return hypercube
+    .map(pipe(
+      ([x, y]) => [x * size, y * size],
+      ([x, y]) => [x + width / 2, y + height / 2],
+      ([x, y]) => [
+        Math.round(x * canvasPixelRatio),
+        Math.round(y * canvasPixelRatio),
+      ],
+    ))
+    .vertexs
 }
-
-const horizontalLine = ({width, height}) => (
-  [[0, height/2], [width, height/2]]
-)
 
 function measureHeight ({joints}) {
   const ys = joints.map(([, y]) => y)
