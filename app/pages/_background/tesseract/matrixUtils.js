@@ -8,24 +8,26 @@ export const matrixTransform = (...matrixs) => {
   }
 
   return (point) => {
-    if (matrix.length < point.length) throw `Error:
+    if (matrix.length < point.length) throw `\
+Error:
 Matrix and point must have the same dimension: given matrix has ${matrix.length} but given point has ${point.length}`
 
-
     return point.map((_, row) =>
-      point.reduce((acc, n, column) =>
-        acc + n * matrix[row][column]
-      , 0)
+      point.reduce(
+        (acc, n, col) => acc + n * matrix[row][col],
+        0,
       )
+    )
   }
 }
 
 export const matrixMultiply = (m1, m2) => {
   return m1.map((_, i) =>
     m2.map((_, j) =>
-      m1.reduce((acc, _, k) =>
-        acc + m1[i][k] * m2[k][j],
-      0)
+      m1.reduce(
+        (acc, _, k) => acc + m1[i][k] * m2[k][j],
+        0,
+      )
     )
   )
 }

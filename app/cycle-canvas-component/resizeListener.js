@@ -1,11 +1,12 @@
 import insertionQ from 'insertion-query'
 
 export const addResizeListener = function (element, onResize) {
-  const resizeHandler = () => element.dispatchEvent(new CustomEvent('resize', {bubbles: true}))
-  const iframe = document.createElement('iframe')
-  const objID = String('fnx-resizelistener-' + Date.now() + Math.round(Math.random() * 1000))
+  const resizeEvent = new CustomEvent('resize', {bubbles: true})
+  const resizeHandler = () => element.dispatchEvent(resizeEvent)
+  const objID = `fnx-resizelistener-${Date.now()}-${randomInt(1000)}`
 
-  iframe.type = 'text/html'
+  const iframe = document.createElement('iframe')
+  iframe.setAttribute('type', 'text/html')
   iframe.setAttribute('id', objID)
   iframe.setAttribute('style', `\
 display: block;\
@@ -20,17 +21,14 @@ z-index: -1;\
 opacity: 0;\
   `)
 
-  insertionQ('#' + objID)
-    .every(onReady)
+  insertionQ.config({strictlyNew: false, timeout: 0})
+  insertionQ('#' + objID).every(onInsertion)
 
-  function onReady () {
-    const computedStyle = getComputedStyle(element)
-    if (computedStyle.position === 'static') {
-      element.style.position = 'relative'
-    }
-    if (computedStyle.display === 'inline') {
-      element.style.display = 'block'
-    }
+  function onInsertion () {
+    const {position, display} = getComputedStyle(element)
+    if (position === 'static') { element.style.position = 'relative' }
+    if (display === 'inline') { element.style.display = 'block' }
+
     const contentDocument = iframe.contentDocument
       ? iframe.contentDocument
       : iframe.contentWindow.document
@@ -40,7 +38,7 @@ opacity: 0;\
     resizeHandler()
   }
 
-  element.appendChild(iframe)
+  setImmediate(() => element.appendChild(iframe))
 
   return function dispose () {
     const contentDocument = iframe.contentDocument
@@ -51,4 +49,8 @@ opacity: 0;\
     element.removeEventListener('resize', onResize)
     element.removeChild(iframe)
   }
+}
+
+function randomInt (max) {
+  return Math.round(Math.random() * max)
 }

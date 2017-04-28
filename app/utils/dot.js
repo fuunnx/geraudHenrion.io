@@ -13,5 +13,4 @@ export const dot = (classNames) => {
   return `${classNames}`
 }
 
-
 export default dot

@@ -1,35 +1,45 @@
-import xs from 'xstream'
+import Background from './_background/background'
+// TODO solve special chars in urls
+import makeLocaleRule from 'utils/makeLocaleRule'
+import resumeUrl from './CV-Geraud-Henrion.pdf'
 import {div, a} from '@cycle/dom'
 import styles from './_hero.css'
-import Background from './_background/background'
-import resumeUrl from './CV-Geraud-Henrion.pdf' // TODO solve special chars in urls
 
-import makeLocaleRule from 'utils/makeLocaleRule'
 const c = makeLocaleRule(styles)
 
 export default function Hero (sources) {
   const background = Background(sources)
 
   return {
-    DOM: xs.of(div(c('hero'), [
-      background({style: {'z-index': 1}}),
-      div(c('content'), {style: {'z-index': 4}}, [
-        a(c('button'), {attrs: {href: resumeUrl, target: '_blank'}}, [
-          'Get my resume (FR)',
+    DOM: background.DOM.map(renderHero),
+    Canvas: background.Canvas,
+  }
+}
+
+function renderHero (background) {
+  return div(c('hero'), [
+    background({style: {'z-index': 1}}),
+    div(c('content'), {style: {'z-index': 4}}, [
+      externalLink(c('button'), resumeUrl, [
+        'Get my resume (FR)',
+      ]),
+      div(c('afterButton')),
+      div(c('socialLinks'), [
+        externalLink(c('socialLink'), 'mailto:geraud.henrion@gmail.com', [
+          'geraud.henrion@gmail.com',
         ]),
-        div(c('afterButton')),
-        div(c('socialLinks'), [
-          a(c('socialLink'), {attrs: {href: 'mailto:geraud.henrion@gmail.com', target: '_blank'}}, [
-            'geraud.henrion@gmail.com',
-          ]),
-          a(c('socialLink'), {attrs: {href: 'https://twitter.com/GeraudHenrion', target: '_blank'}}, [
-            '@GeraudHenrion',
-          ]),
-          a(c('socialLink'), {attrs: {href: 'https://github.com/fuunnx', target: '_blank'}}, [
-            'Github',
-          ]),
+        externalLink(c('socialLink'), 'mailto:geraud.henrion@gmail.com', [
+          '@GeraudHenrion',
         ]),
       ]),
-    ])),
-  }
+    ]),
+  ])
+}
+
+function externalLink (selector, href, children) {
+  return a(
+    selector,
+    {attrs: {href, target: '_blank'}},
+    children,
+  )
 }

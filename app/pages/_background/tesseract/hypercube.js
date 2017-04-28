@@ -1,11 +1,11 @@
+import Shape from './Graph'
+import {pipe} from 'ramda'
 import {
   matrixTransform,
   rotateXYMatrix4,
   rotateZMatrix4,
   rotateXMatrix4,
 } from './matrixUtils'
-import Shape from './Shape'
-import {pipe} from 'ramda'
 
 const {PI} = Math
 const hypercube = Shape.hypercube()

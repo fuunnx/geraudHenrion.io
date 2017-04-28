@@ -1,5 +1,6 @@
 import {makeModulesDriver} from 'drivers/modulesDriver'
 import {HEAD_NAMESPACE, APP_NODE} from './settings.js'
+import {makeCanvasDriver} from 'drivers/cycle-canvas'
 import {makeDOMHeadDriver} from 'drivers/headDriver'
 import {makeHistoryDriver} from '@cycle/history'
 import {makeDOMDriver} from '@cycle/dom'
@@ -13,6 +14,7 @@ const drivers = {
   DOM: makeDOMDriver(APP_NODE, {transposition: true}),
   Head: makeDOMHeadDriver(HEAD_NAMESPACE),
   Modules: makeModulesDriver(),
+  Canvas: makeCanvasDriver(),
   Context: () => 'browser',
   Time: timeDriver,
 }

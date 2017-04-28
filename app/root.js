@@ -1,37 +1,47 @@
-import {prop} from 'ramda'
 import 'normalize.css/normalize.css'
 import './global.css'
+
 import {head, title, meta} from '@cycle/dom'
+import {prop, replace} from 'ramda'
 
 export default root
 export function root (sources) {
   const {History, Modules} = sources
-  const currentUrl$ = History.map(prop('pathname'))
-    .map(path => path.replace('.html', ''))
+  const currentUrl$ = History
+    .map(prop('pathname'))
+    .map(replace('.html', ''))
     .map(route => route == '/' ? '/index' : route)
 
-  const loadModule$ = currentUrl$
-
   const page$ = currentUrl$
-    .map(route => Modules.get(route))
+    .map(Modules.get)
     .flatten()
-    .map(pageComponent => pageComponent(sources))
+    .map(page => page(sources))
 
-  const vtree$ = page$.map(x => x.DOM)
-    .filter(x => !!x)
-    .flatten()
+  const vtree$ = page$
+    .compose(extractKey('DOM'))
 
-  const headvtree$ = page$.map(x => x.Title)
-    .filter(x => !!x)
-    .flatten()
+  const canvas$ = page$
+    .compose(extractKey('Canvas'))
+
+  const headvtree$ = page$
+    .compose(extractKey('Title'))
     .map(x => head([
       meta({attrs: {charset: 'utf-8'}}),
       title(x),
     ]))
 
   return {
-    Modules: loadModule$,
-    DOM: vtree$,
+    Modules: currentUrl$,
     Head: headvtree$,
+    Canvas: canvas$,
+    DOM: vtree$,
   }
 }
+
+
+const extractKey = (key) => (stream$) => (
+  stream$
+    .map(prop(key))
+    .filter(x => !!x)
+    .flatten()
+)

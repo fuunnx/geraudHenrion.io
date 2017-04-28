@@ -14,13 +14,16 @@ const colors = [
 
 export const gradient = h('svg',
   {attrs: {width: '100%', height: '100%'}},
-  [...Array(steps)].map((_, index) =>
-    h('rect', {attrs: {
-      width: '100%',
-      height: `${100/8 + .1}%`,
-      fill: colors[index],
-      y: `${100/8 * index}%`,
-    }}),
+  Array(steps)
+    .fill()
+    .map((_, index) => (
+      h('rect', {attrs: {
+        width: '100%',
+        height: `${100/8 + .1}%`,
+        fill: colors[index],
+        y: `${100/8 * index}%`,
+      }})
+    ),
   ),
 )
 export default gradient

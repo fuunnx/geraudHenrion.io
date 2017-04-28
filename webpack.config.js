@@ -80,7 +80,7 @@ module.exports = function (env) { // eslint-disable-line
 
   return {
     target: isStatic ? 'node' : 'web',
-    devtool: isProd ? 'source-map' : 'eval',
+    devtool: isProd ? 'source-map' : 'cheap-module-sourcemap',
     context: sourcePath,
     entry: isStatic
       ? 'index.' + env + '.js'
@@ -162,6 +162,7 @@ module.exports = function (env) { // eslint-disable-line
       contentBase: './dist',
       historyApiFallback: true,
       port: 3000,
+      host: '0.0.0.0',
       compress: isProd,
       inline: !isProd,
       hot: !isProd,
