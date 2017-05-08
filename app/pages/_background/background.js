@@ -1,12 +1,12 @@
 import makeLocaleRule from 'utils/makeLocaleRule'
-import punchline from '../_img/introduction.svg'
 import tesseractImg from 'assets/logo.svg.js'
+import punchline from './introduction.svg'
 import {div, img, span} from '@cycle/dom'
-import myHead from '../_img/head.svg'
 import styles from './background.css'
 import Tesseract from './tesseract'
 import gradient from './gradient'
 import {vnode} from 'utils/vnode'
+import myHead from './head.svg'
 import Glitch from './glitch'
 import xs from 'xstream'
 
@@ -35,7 +35,7 @@ function renderBackground (Context) {
       div(c('gradient'), [gradient]),
       ((Context == 'browser') ? glitch : ''),
       img(c('myHead'), {props: {src: myHead}}),
-      ((Context == 'browser')
+      ((Context == !Context/*'browser'*/)
         ? tesseract
         : span(c('tesseractSvg'), {props: {innerHTML: tesseractImg}})
       ),
