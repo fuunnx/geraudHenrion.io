@@ -33,7 +33,7 @@ function renderBackground (Context) {
   return ([glitch, tesseract]) => vnode(({selector}) => (
     div(selector + c('background'), [
       div(c('gradient'), [gradient]),
-      glitch,
+      ((Context == 'browser') ? glitch : ''),
       img(c('myHead'), {props: {src: myHead}}),
       ((Context == 'browser')
         ? tesseract
