@@ -1,10 +1,17 @@
+.hero {
+  height: 100vh;
+  position: relative;
+  border: 10px solid #fff;
+}
 .content {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 }
 .button {
-  font-family: catamaran, roboto, helvetica, sans-serif;
+  font-family: ahamono, monospace;
   font-weight: 600;
   text-transform: uppercase;
   position: absolute;
@@ -14,14 +21,30 @@
   margin: auto;
   text-align: center;
   border: 1px solid #fff;
-  color: #fff;
+  color: #132638;
   text-decoration: none;
-  background: #993831;
+  background: #fff;
   padding: 1rem;
   transition: .2s;
 }
 .button:hover {
-  background: #b63c2f;
+  background: #fff;
+  transform: scale(1.05);
+  /*position: relative;*/
+  z-index: 101;
+}
+
+.button:hover + .afterButton {
+  content: "";
+  display: block;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #df422d;
+  opacity: 0.5;
 }
 
 .socialLinks {

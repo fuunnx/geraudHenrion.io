@@ -1,14 +1,14 @@
-import {makeHTMLHeadDriver} from 'drivers/headDriver'
-import {makeHTMLDriver} from '@cycle/dom'
 import {makeModulesDriver} from 'drivers/modulesDriver'
+import {HEAD_NAMESPACE, APP_NODE} from './settings.js'
+import {makeHTMLHeadDriver} from 'drivers/headDriver'
 import {makeHistoryDriver} from '@cycle/history'
 import {createMemoryHistory} from 'history'
+import {mockTimeSource} from '@cycle/time'
+import {makeHTMLDriver} from '@cycle/dom'
 import {run} from '@cycle/xstream-run'
 import {pluck} from 'utils/operators'
-import xs from 'xstream'
-
 import {root} from './root'
-import {HEAD_NAMESPACE, APP_NODE} from './settings.js'
+import xs from 'xstream'
 
 const toHTML = ([head, body]) => `\
 <!DOCTYPE html>\
@@ -28,8 +28,9 @@ export default function app ({path}, callback) {
         DOM: makeHTMLDriver(x => listener.next({DOM: x}), {transposition: true}),
         Head: makeHTMLHeadDriver(HEAD_NAMESPACE, x => listener.next({Head: x})),
         History: makeHistoryDriver(createMemoryHistory(path)),
+        Time: () => mockTimeSource({interval: 10}),
         Modules: makeModulesDriver(),
-        Animation: () => xs.of({}),
+        Context: () => 'server',
       }
       setImmediate(() => run(root, drivers))
     },
