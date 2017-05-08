@@ -1,7 +1,8 @@
 import 'normalize.css/normalize.css'
 import './global.css'
+import 'assets/ahamono-font/index.css'
 
-import {head, title, meta} from '@cycle/dom'
+import {head, title, meta, link} from '@cycle/dom'
 import {prop, replace} from 'ramda'
 
 export default root
@@ -28,6 +29,14 @@ export function root (sources) {
     .map(x => head([
       meta({attrs: {charset: 'utf-8'}}),
       title(x),
+      link({attrs: {
+        href: 'https://fonts.googleapis.com/css?family=Catamaran:400,900',
+        rel: 'stylesheet',
+      }}),
+      // link({attrs: {
+      //   href: '/assets/ahamono-font/index.css',
+      //   rel: 'stylesheet',
+      // }}),
     ]))
 
   return {

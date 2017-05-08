@@ -124,7 +124,7 @@ module.exports = function (env) { // eslint-disable-line
           ],
         },
         {
-          test: /.*\.(pdf)$/i,
+          test: /.*\.(pdf|otf|woff|woff2|ttf|(svg#.*)|eot)$/i,
           use: [
             'file-loader?name=[name].[ext]',
           ],
