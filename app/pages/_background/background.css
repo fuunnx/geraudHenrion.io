@@ -1,68 +1,72 @@
 .background {
   position: absolute;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
+
   text-align: center;
 }
 
 .gradient {
   position: absolute;
+  z-index: 1;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  z-index: 1;
 }
 
 .glitch {
   position: absolute;
+  z-index: 2;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  z-index: 2;
+
   min-width: 100%;
   min-height: 100%;
 }
 
 .myHead {
   position: absolute;
+  z-index: 3;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
-  max-height: calc(100% / 5 * 4);
-  min-height: calc(100% / 5 * 4);
 
-  z-index: 3;
+  min-height: calc(100% / 5 * 4);
+  max-height: calc(100% / 5 * 4);
   margin: auto;
 }
 
 .tesseractAnimation {
   position: absolute;
+  z-index: 4;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
+
   width: 100%;
   height: auto;
-  z-index: 4;
   margin: auto;
 }
 
 .tesseractSvg svg {
   position: absolute;
+  z-index: 4;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
+
   width: 100%;
   height: auto;
-  max-height: calc(100% / 8 * 6);
   min-height: calc(100% / 8 * 6);
-  z-index: 4;
+  max-height: calc(100% / 8 * 6);
   margin: auto;
 }
 
@@ -72,17 +76,21 @@
 }
 
 .punchline {
-  text-align: center;
-  display: inline-block;
   position: absolute;
+  z-index: 5;
   top: 0;
+  right: 0;
   bottom: 0;
   left: 0;
-  right: 0;
+
+  display: inline-block;
+
   width: auto;
   max-height: calc(100% / 4);
-  z-index: 5;
   margin: auto;
+
+  text-align: center;
+
   color: #fff;
 }
 .punchline:first-child(1) {
@@ -96,18 +104,23 @@
   font-weight: bolder;
 }
 .punchline:nth-child(3) {
+  float: right;
+
   font-family: ahamono;
   font-size: 1rem;
-  float: right;
 }
 .background::before {
-  content: "";
   position: absolute;
-  display: block;
-  top: calc(50% - 1px);
-  left: 0;
-  right: 0;
-  width: 100%;
-  border: 1px solid #fff;
   z-index: 5;
+  top: calc(50% - 1px);
+  right: 0;
+  left: 0;
+
+  display: block;
+
+  width: 100%;
+
+  content: "";
+
+  border: 1px solid #fff;
 }

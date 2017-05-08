@@ -1,66 +1,85 @@
 .hero {
-  height: 100vh;
   position: relative;
+
+  height: 100vh;
+
   border: 10px solid #fff;
 }
 .content {
   position: relative;
+
   display: flex;
+
+  height: 100%;
+
   align-items: center;
   justify-content: center;
-  height: 100%;
 }
 .button {
-  font-family: ahamono, monospace;
-  font-weight: 600;
-  text-transform: uppercase;
   position: absolute;
   top: 60%;
-  line-height: 100%;
+
   display: block;
+
   margin: auto;
-  text-align: center;
-  border: 1px solid #fff;
-  color: #132638;
-  text-decoration: none;
-  background: #fff;
   padding: 1rem;
+
   transition: .2s;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  color: #132638;
+  border: 1px solid #fff;
+  background: #fff;
+
+  font-family: ahamono, monospace;
+  font-weight: 600;
+  line-height: 100%;
 }
 .button:hover {
-  background: #fff;
-  transform: scale(1.05);
   /*position: relative;*/
   z-index: 101;
+
+  transform: scale(1.05);
+
+  background: #fff;
 }
 
 .button:hover + .afterButton {
-  content: "";
-  display: block;
   position: fixed;
   z-index: 100;
   top: 0;
-  left: 0;
   right: 0;
   bottom: 0;
-  background: #df422d;
+  left: 0;
+
+  display: block;
+
+  content: "";
+
   opacity: 0.5;
+  background: #df422d;
 }
 
 .socialLinks {
   position: absolute;
-  bottom: 0;
   right: 0;
+  bottom: 0;
   left: 0;
+
   display: flex;
   flex-direction: row;
+
   align-items: flex-end;
   justify-content: flex-end;
   flex-wrap: wrap;
 }
 .socialLink {
+  margin: 0 1rem;
+
   color: #fff;
+
   font-family: ahamono, consolas, helvetica, sans-serif;
   line-height: 2rem;
-  margin: 0 1rem;
 }
