@@ -74,41 +74,6 @@
   stroke: white;
   stroke-width: 1px;
 }
-
-.punchline {
-  position: absolute;
-  z-index: 5;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  display: inline-block;
-
-  width: auto;
-  max-height: calc(100% / 4);
-  margin: auto;
-
-  text-align: center;
-
-  color: #fff;
-}
-.punchline:first-child(1) {
-  font-family: catamaran;
-  font-size: 1rem;
-  font-weight: normal;
-}
-.punchline:nth-child(2) {
-  font-family: catamaran;
-  font-size: 2rem;
-  font-weight: bolder;
-}
-.punchline:nth-child(3) {
-  float: right;
-
-  font-family: ahamono;
-  font-size: 1rem;
-}
 .background::before {
   position: absolute;
   z-index: 5;

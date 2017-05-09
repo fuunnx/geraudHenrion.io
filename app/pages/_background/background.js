@@ -1,7 +1,6 @@
 import makeLocaleRule from 'utils/makeLocaleRule'
-import tesseractImg from 'assets/logo.svg.js'
-import punchline from './introduction.svg'
 import {div, img, span} from '@cycle/dom'
+import tesseractImg from 'assets/logo.svg.js'
 import styles from './background.css'
 import Tesseract from './tesseract'
 import gradient from './gradient'
@@ -35,11 +34,10 @@ function renderBackground (Context) {
       div(c('gradient'), [gradient]),
       ((Context == 'browser') ? glitch : ''),
       img(c('myHead'), {props: {src: myHead}}),
-      ((Context == !Context/*'browser'*/)
+      ((Context == 'browser')
         ? tesseract
         : span(c('tesseractSvg'), {props: {innerHTML: tesseractImg}})
       ),
-      img(c('punchline'), {props: {src: punchline}}),
     ])
   ))
 }

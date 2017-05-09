@@ -48,7 +48,7 @@
 
 .button:hover + .afterButton {
   position: fixed;
-  z-index: 100;
+  z-index: 3;
   top: 0;
   right: 0;
   bottom: 0;
@@ -82,4 +82,94 @@
 
   font-family: ahamono, consolas, helvetica, sans-serif;
   line-height: 2rem;
+}
+.punchline {
+  position: relative;
+  z-index: 101;
+  opacity: 1;
+  color: #fff;
+
+  display: inline-flex;
+  flex-direction: column;
+
+  width: auto;
+  max-width: none;
+  height: 9rem;
+  margin: auto;
+
+  align-items: center;
+}
+.punchline > * {
+  display: inline-block;
+
+  width: auto;
+
+  line-height: 100%;
+}
+.punchline-hello {
+  font-family: catamaran;
+  font-size: 1.8rem;
+  font-weight: normal;
+  line-height: 2rem;
+}
+.punchline-name {
+  margin-top: .1rem;
+  margin-right: -.4rem;
+
+  letter-spacing: .4rem;
+  text-transform: uppercase;
+
+  font-family: catamaran;
+  font-size: 2.9rem;
+  font-weight: bolder;
+  line-height: 3rem;
+}
+.punchline-title {
+  letter-spacing: .025rem;
+
+  font-family: ahamono;
+  font-size: 1.25rem;
+  font-weight: normal;
+
+  align-self: flex-end;
+}
+.punchline-title span {
+  text-decoration: line-through;
+}
+@media screen and (max-width: 600px) {
+  .punchline {
+    height: 6.4rem;
+  }
+  .punchline-hello {
+    font-size: 1.4rem;
+    line-height: 1.5rem;
+  }
+  .punchline-name {
+    font-size: 2rem;
+    line-height: 2rem;
+    letter-spacing: .3rem;
+  }
+  .punchline-title {
+    font-size: 1rem;
+  }
+}
+@media screen and (max-width: 400px) {
+  .punchline {
+    height: 5rem;
+  }
+  .punchline-hello {
+    font-size: 1.2rem;
+    line-height: 1.25rem;
+  }
+  .punchline-name {
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    letter-spacing: .1rem;
+  }
+  .punchline-title {
+    font-size: 1rem;
+    line-height: 1rem;
+    text-align: center;
+    align-self: center;
+  }
 }

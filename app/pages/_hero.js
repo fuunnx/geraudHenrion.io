@@ -2,7 +2,7 @@ import Background from './_background/background'
 // TODO solve special chars in urls
 import makeLocaleRule from 'utils/makeLocaleRule'
 import resumeUrl from './CV-Geraud-Henrion.pdf'
-import {div, a} from '@cycle/dom'
+import {div, a, span, br, h1} from '@cycle/dom'
 import styles from './_hero.css'
 
 const c = makeLocaleRule(styles)
@@ -19,7 +19,8 @@ export default function Hero (sources) {
 function renderHero (background) {
   return div(c('hero'), [
     background({style: {'z-index': 1}}),
-    div(c('content'), {style: {'z-index': 4}}, [
+    div(c('content'), {style: {'z-index': 5}}, [
+      renderPunchline(),
       externalLink(c('button'), resumeUrl, [
         'Get my resume (FR)',
       ]),
@@ -42,4 +43,18 @@ function externalLink (selector, href, children) {
     {attrs: {href, target: '_blank'}},
     children,
   )
+}
+
+function renderPunchline () {
+  return h1(c('punchline'), [
+    span(c('punchline-hello'), [
+      'Hello, my name is', br(),
+    ]),
+    span(c('punchline-name'), [
+      'Géraud Henrion', br(),
+    ]),
+    span(c('punchline-title'), [
+      'and I\'m a ', span('Crazy'), ' Creative Web Developper',
+    ]),
+  ])
 }
