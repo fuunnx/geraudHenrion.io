@@ -33,10 +33,6 @@ export function root (sources) {
         href: 'https://fonts.googleapis.com/css?family=Catamaran:400,900',
         rel: 'stylesheet',
       }}),
-      // link({attrs: {
-      //   href: '/assets/ahamono-font/index.css',
-      //   rel: 'stylesheet',
-      // }}),
     ]))
 
   return {
