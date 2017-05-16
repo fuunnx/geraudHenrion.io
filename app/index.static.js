@@ -14,6 +14,8 @@ const toHTML = ([head, body]) => `\
 <!DOCTYPE html>\
 <html lang="fr">\
 ${head}\
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
 <link rel="stylesheet" href="/styles.css">\
 <div id="${APP_NODE.replace('#', '')}">${body}</div>\
 <script src="/vendor.bundle.js"></script>\
