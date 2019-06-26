@@ -1,6 +1,7 @@
 import {makeModulesDriver} from 'drivers/modulesDriver'
 import {HEAD_NAMESPACE, APP_NODE} from './settings.js'
-import {makeCanvasDriver} from 'drivers/cycle-canvas'
+import {makeCanvasDriver} from 'drivers/canvasDriver'
+import {makeWindowDriver} from 'drivers/windowDriver'
 import {makeDOMHeadDriver} from 'drivers/headDriver'
 import {makeHistoryDriver} from '@cycle/history'
 import {makeDOMDriver} from '@cycle/dom'
@@ -9,14 +10,19 @@ import {run} from '@cycle/xstream-run'
 import {createHistory} from 'history'
 import {root} from './root'
 
-const drivers = {
-  History: makeHistoryDriver(createHistory(), {capture: true}),
-  DOM: makeDOMDriver(APP_NODE, {transposition: true}),
-  Head: makeDOMHeadDriver(HEAD_NAMESPACE),
-  Modules: makeModulesDriver(),
-  Canvas: makeCanvasDriver(),
-  Context: () => 'browser',
-  Time: timeDriver,
-}
+document.addEventListener('DOMContentLoaded', init)
 
-run(root, drivers)
+function init () {
+  const drivers = {
+    History: makeHistoryDriver(createHistory(), {capture: true}),
+    DOM: makeDOMDriver(APP_NODE, {transposition: true}),
+    Head: makeDOMHeadDriver(HEAD_NAMESPACE),
+    Modules: makeModulesDriver(),
+    Canvas: makeCanvasDriver(),
+    Window: makeWindowDriver(),
+    Context: () => 'browser',
+    Time: timeDriver,
+  }
+
+  run(root, drivers)
+}

@@ -1,6 +1,7 @@
 import {makeModulesDriver} from 'drivers/modulesDriver'
 import {HEAD_NAMESPACE, APP_NODE} from './settings.js'
 import {makeHTMLHeadDriver} from 'drivers/headDriver'
+import {mockWindowDriver} from 'drivers/windowDriver'
 import {makeHistoryDriver} from '@cycle/history'
 import {createMemoryHistory} from 'history'
 import {mockTimeSource} from '@cycle/time'
@@ -17,9 +18,9 @@ ${head}\
 <meta charset="utf-8">
 <meta name="viewport" content="initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
 <link rel="stylesheet" href="/styles.css">\
-<div id="${APP_NODE.replace('#', '')}">${body}</div>\
-<script src="/vendor.bundle.js"></script>\
-<script src="/js.bundle.js"></script>\
+<script defer src="/vendor.bundle.js"></script>\
+<script defer src="/js.bundle.js"></script>\
+<body id="${APP_NODE.replace('#', '')}">${body}</body>\
 `
 
 // for static site renderer
@@ -31,6 +32,7 @@ export default function app ({path}, callback) {
         Head: makeHTMLHeadDriver(HEAD_NAMESPACE, x => listener.next({Head: x})),
         History: makeHistoryDriver(createMemoryHistory(path)),
         Time: () => mockTimeSource({interval: 10}),
+        Window: mockWindowDriver(),
         Modules: makeModulesDriver(),
         Context: () => 'server',
       }

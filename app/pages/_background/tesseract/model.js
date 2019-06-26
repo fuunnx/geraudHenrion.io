@@ -3,9 +3,9 @@ import {min, max} from 'ramda'
 import xs from 'xstream'
 
 const DURATION = 15000 // ms
-export const model = ({canvasSize$, elapsedTime$}) => {
+export const model = ({canvasSize$, elapsedTime$, rotateX$}) => {
   const canvasPixelRatio = 1
-  const initialState = Object.values(hypercubeAnimationState(0).joints)
+  const initialState = Object.values(hypercubeAnimationState(0, 0).joints)
 
   const {width: illusWidth, height: illusHeight} = boundingRect(initialState)
 
@@ -23,15 +23,15 @@ export const model = ({canvasSize$, elapsedTime$}) => {
     }))
 
   return xs
-    .combine(scale$, position$, elapsedTime$)
-    .map(([scale, position, time]) =>
-      animation(scale * canvasPixelRatio, position, time)
+    .combine(scale$, position$, elapsedTime$, rotateX$)
+    .map(([scale, position, time, rotateX]) =>
+      animation(scale * canvasPixelRatio, position, time, rotateX)
     )
 }
 
-function animation (scale, location, time) {
+function animation (scale, location, time, rotateX) {
   const step = (time / DURATION) % 1
-  const hypercube = hypercubeAnimationState(step)
+  const hypercube = hypercubeAnimationState(rotateX, step)
 
   return hypercube
     .map(([x, y]) => ({

@@ -2,8 +2,6 @@
   position: relative;
 
   height: 100vh;
-
-  border: 10px solid #fff;
 }
 .content {
   position: relative;
@@ -84,10 +82,8 @@
   line-height: 2rem;
 }
 .punchline {
-  position: relative;
+  position: fixed;
   z-index: 101;
-  opacity: 1;
-  color: #fff;
 
   display: inline-flex;
   flex-direction: column;
@@ -96,6 +92,9 @@
   max-width: none;
   height: 9rem;
   margin: auto;
+
+  opacity: 1;
+  color: #fff;
 
   align-items: center;
 }
@@ -145,9 +144,10 @@
     line-height: 1.5rem;
   }
   .punchline-name {
+    letter-spacing: .3rem;
+
     font-size: 2rem;
     line-height: 2rem;
-    letter-spacing: .3rem;
   }
   .punchline-title {
     font-size: 1rem;
@@ -162,14 +162,17 @@
     line-height: 1.25rem;
   }
   .punchline-name {
+    letter-spacing: .1rem;
+
     font-size: 1.5rem;
     line-height: 1.5rem;
-    letter-spacing: .1rem;
   }
   .punchline-title {
+    text-align: center;
+
     font-size: 1rem;
     line-height: 1rem;
-    text-align: center;
+
     align-self: center;
   }
 }

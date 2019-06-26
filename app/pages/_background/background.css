@@ -9,7 +9,7 @@
 }
 
 .gradient {
-  position: absolute;
+  position: fixed;
   z-index: 1;
   top: 0;
   right: 0;
@@ -18,7 +18,7 @@
 }
 
 .glitch {
-  position: absolute;
+  position: fixed;
   z-index: 2;
   top: 0;
   right: 0;
@@ -30,7 +30,7 @@
 }
 
 .myHead {
-  position: absolute;
+  position: fixed;
   z-index: 3;
   top: 0;
   right: 0;
@@ -43,7 +43,7 @@
 }
 
 .tesseractAnimation {
-  position: absolute;
+  position: fixed;
   z-index: 4;
   top: 0;
   right: 0;
@@ -75,7 +75,7 @@
   stroke-width: 1px;
 }
 .background::before {
-  position: absolute;
+  position: fixed;
   z-index: 5;
   top: calc(50% - 1px);
   right: 0;

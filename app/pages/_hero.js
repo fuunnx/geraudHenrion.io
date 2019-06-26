@@ -16,23 +16,23 @@ export default function Hero (sources) {
   }
 }
 
-function renderHero (background) {
+function renderHero ($background) {
   return div(c('hero'), [
-    background({style: {'z-index': 1}}),
+    $background({style: {'z-index': 1}}),
     div(c('content'), {style: {'z-index': 5}}, [
       renderPunchline(),
-      externalLink(c('button'), resumeUrl, [
-        'Get my resume (FR)',
-      ]),
-      div(c('afterButton')),
-      div(c('socialLinks'), [
-        externalLink(c('socialLink'), 'mailto:geraud.henrion@gmail.com', [
-          'geraud.henrion@gmail.com',
-        ]),
-        externalLink(c('socialLink'), 'mailto:geraud.henrion@gmail.com', [
-          '@GeraudHenrion',
-        ]),
-      ]),
+      // externalLink(c('button'), resumeUrl, [
+      //   'Get my resume (FR)',
+      // ]),
+      // div(c('afterButton')),
+      // div(c('socialLinks'), [
+      //   externalLink(c('socialLink'), 'mailto:geraud.henrion@gmail.com', [
+      //     'geraud.henrion@gmail.com',
+      //   ]),
+      //   externalLink(c('socialLink'), 'mailto:geraud.henrion@gmail.com', [
+      //     '@GeraudHenrion',
+      //   ]),
+      // ]),
     ]),
   ])
 }
@@ -54,7 +54,7 @@ function renderPunchline () {
       'Géraud Henrion', br(),
     ]),
     span(c('punchline-title'), [
-      'and I\'m a ', span('Crazy'), ' Creative Web Developper',
+      'and I\'m a Creative Web Developper',
     ]),
   ])
 }

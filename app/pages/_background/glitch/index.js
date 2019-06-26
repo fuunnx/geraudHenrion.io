@@ -1,5 +1,5 @@
 import {canvas} from 'app/cycle-canvas-component'
-import {rects} from 'drivers/cycle-canvas'
+import {rects} from 'drivers/canvasDriver'
 import {vnode} from 'utils/vnode'
 import {intent} from './intent'
 import {model} from './model'

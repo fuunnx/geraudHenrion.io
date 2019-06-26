@@ -5,25 +5,28 @@ import {
   rotateXYMatrix4,
   rotateZMatrix4,
   rotateXMatrix4,
+  rotateYMatrix4,
 } from './matrixUtils'
 
 const {PI} = Math
 const hypercube = Shape.hypercube()
 
-export function hypercubeAnimationState (step) {
+export function hypercubeAnimationState (rotateX, step) {
   return hypercube
     .map(pipe(
-      rotation(step),
+      rotation(rotateX, step),
       otherTransforms,
     ))
 }
 
 export default hypercubeAnimationState
 
-function rotation (step) {
+function rotation (rotateX, step) {
   return matrixTransform(
     rotateXMatrix4(step * 1 * PI),
-    rotateXYMatrix4(step * 2 * PI),
+    rotateXYMatrix4(step * 2 * PI + rotateX),
+    rotateYMatrix4(rotateX),
+    rotateZMatrix4(rotateX / 2),
   )
 }
 
