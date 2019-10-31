@@ -34,7 +34,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "css-loader": "^0.25.0",
     "cycle-restart": "0.0.14",
-    "eslint": "^3.18.0",
+    "eslint": "^6.6.0",
     "eslint-plugin-immutable": "^1.0.0",
     "eslint-plugin-no-class": "^0.1.0",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
