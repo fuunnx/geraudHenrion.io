@@ -1,7 +1,6 @@
 import Background from './_background/background'
 // TODO solve special chars in urls
 import makeLocaleRule from 'utils/makeLocaleRule'
-import resumeUrl from './CV-Geraud-Henrion.pdf'
 import {div, a, span, br, h1} from '@cycle/dom'
 import styles from './_hero.css'
 
@@ -21,9 +20,6 @@ function renderHero (background) {
     background({style: {'z-index': 1}}),
     div(c('content'), {style: {'z-index': 5}}, [
       renderPunchline(),
-      externalLink(c('button'), resumeUrl, [
-        'Get my resume (FR)',
-      ]),
       div(c('afterButton')),
       div(c('socialLinks'), [
         externalLink(c('socialLink'), 'mailto:geraud.henrion@gmail.com', [

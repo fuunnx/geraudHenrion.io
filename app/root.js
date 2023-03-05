@@ -1,6 +1,5 @@
 import 'normalize.css/normalize.css'
 import './global.css'
-import 'assets/ahamono-font/index.css'
 
 import {head, title, meta, link} from '@cycle/dom'
 import {prop, replace} from 'ramda'
@@ -30,11 +29,23 @@ export function root (sources) {
       meta({attrs: {charset: 'utf-8'}}),
       title(x),
       link({attrs: {
-        href: 'https://fonts.googleapis.com/css?family=Catamaran:400,900',
+        href: 'https://fonts.googleapis.com',
+        rel: 'preconnect',
+      }}),
+      link({attrs: {
+        href: 'https://fonts.gstatic.com',
+        rel: 'preconnect',
+        crossorigin: true,
+      }}),
+      link({attrs: {
+        href: 'https://fonts.googleapis.com/css?family=Catamaran:400,900&display=swap',
+        rel: 'stylesheet',
+      }}),
+      link({attrs: {
+        href: 'https://fonts.googleapis.com/css?family=Courier+Prime:400&display=swap',
         rel: 'stylesheet',
       }}),
     ]))
-
   return {
     Modules: currentUrl$,
     Head: headvtree$,

@@ -33,7 +33,7 @@
   border: 1px solid #fff;
   background: #fff;
 
-  font-family: ahamono, monospace;
+  font-family: 'Courier Prime', monospace;
   font-weight: 600;
   line-height: 100%;
 }
@@ -80,7 +80,7 @@
 
   color: #fff;
 
-  font-family: ahamono, consolas, helvetica, sans-serif;
+  font-family: 'Courier Prime', consolas, helvetica, sans-serif;
   line-height: 2rem;
 }
 .punchline {
@@ -127,7 +127,7 @@
 .punchline-title {
   letter-spacing: .025rem;
 
-  font-family: ahamono;
+  font-family: 'Courier Prime', 'monospace';
   font-size: 1.25rem;
   font-weight: normal;
 
